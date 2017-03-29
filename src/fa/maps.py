@@ -386,6 +386,8 @@ iconExtensions = ["png"]  # "jpg" removed to have fewer of those costly 404 miss
 
 
 def preview(mapname, pixmap=False):
+    if '/' in mapname:
+        mapname = os.path.basename(mapname).rsplit('.', maxsplit=1)[0]
     try:
         # Try to load directly from cache
         for extension in iconExtensions:

@@ -26,10 +26,9 @@ class LoginWidget(FormClass, BaseClass):
     @QtCore.pyqtSlot()
     def on_accepted(self):
         password = self.passwordField.text()
-        hashed_password = util.password_hash(password)
         login = self.loginField.text().strip()
         self.accept()
-        self.finished.emit(login, hashed_password)
+        self.finished.emit(login, password)
 
     @QtCore.pyqtSlot()
     def on_request_quit(self):

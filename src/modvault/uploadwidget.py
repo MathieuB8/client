@@ -8,9 +8,11 @@ from PyQt5 import QtCore, QtWidgets
 import modvault
 import util
 
+from decorators import with_logger
+
 FormClass, BaseClass = util.THEME.loadUiType("modvault/upload.ui")
 
-
+@with_logger
 class UploadModWidget(FormClass, BaseClass):
     def __init__(self, parent, modDir, modinfo, *args, **kwargs):
         BaseClass.__init__(self, *args, **kwargs)
@@ -43,7 +45,7 @@ class UploadModWidget(FormClass, BaseClass):
     @QtCore.pyqtSlot()
     def upload(self):
         n = self.Name.text()
-        if any([(i in n) for i in '"<*>|?/\\:']):
+        if any([(i in n) for i in '"<*>|?/\\']):
             QtWidgets.QMessageBox.information(self.client, "Invalid Name",
                                               "The mod name contains invalid characters: /\\<>|?:\"")
             return
@@ -61,18 +63,18 @@ class UploadModWidget(FormClass, BaseClass):
             return
 
         try:
-            temp = tempfile.NamedTemporaryFile(mode='w+b', suffix=".zip", delete=False)
-            zipped = zipfile.ZipFile(temp, "w", zipfile.ZIP_DEFLATED)
-            zipdir(self.modDir, zipped, os.path.basename(self.modDir))
-            zipped.close()
-            temp.flush()
+            self._api_req = modvault.utils.upload_mod(self.modDir, self.client.Api, self.upload_finished, self.upload_error)
         except:
             QtWidgets.QMessageBox.critical(self.client, "Mod uploading error", "Something went wrong zipping the mod files.")
-            return
-        qfile = QtCore.QFile(temp.name)
+            self._logger.exception('Error uploading mod')
 
-        # The server should check again if there is already a mod with this name or UID.
-        self.client.lobby_connection.writeToServer("UPLOAD_MOD", "%s.v%04d.zip" % (self.modinfo.name, self.modinfo.version), self.modinfo.to_dict(), qfile)
+    def upload_finished(self, resp):
+            QtWidgets.QMessageBox.information(self.client, "Upload finished", "Mod successfully uploaded")
+            self.accept()
+
+    def upload_error(self, errstr):
+            self._logger.error(errstr)
+            QtWidgets.QMessageBox.information(self.client, "Mod Upload Error", errstr)
 
     @QtCore.pyqtSlot()
     def updateThumbnail(self):

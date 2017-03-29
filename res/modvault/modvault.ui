@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>729</width>
+    <width>781</width>
     <height>376</height>
    </rect>
   </property>
@@ -29,10 +29,7 @@
       <number>5</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_6">
-       <property name="spacing">
-        <number>5</number>
-       </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
        <property name="leftMargin">
         <number>5</number>
        </property>
@@ -58,13 +55,6 @@
            <width>250</width>
            <height>16777215</height>
           </size>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QPushButton" name="searchButton">
-         <property name="text">
-          <string>Server Search</string>
          </property>
         </widget>
        </item>
@@ -173,6 +163,13 @@
            <string>Installed</string>
           </property>
          </item>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="refreshButton">
+         <property name="text">
+          <string>Refresh</string>
+         </property>
         </widget>
        </item>
        <item>

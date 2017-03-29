@@ -161,7 +161,7 @@ class LadderMapStat(FormClass, BaseClass):
                                              maps.preview(realmap, True, force=True))
 
         self.mapstats.insertHtml("<img src=\"map.png\" /><br><font size='+5'>" + item.text() + "</font><br><br>")
-        self.client.statsServer.send(dict(command="stats", type="ladder_map_stat", mapid=self.mapid))
+        #self.client.statsServer.send(dict(command="stats", type="ladder_map_stat", mapid=self.mapid))
 
     @QtCore.pyqtSlot(dict)
     def updatemaps(self, message):

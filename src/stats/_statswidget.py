@@ -5,6 +5,7 @@ from config import Settings
 import client
 from util.qt import injectWebviewCSS
 import time
+import traceback
 
 from ui.busy_widget import BusyWidget
 
@@ -60,32 +61,34 @@ class StatsWidget(BaseClass, FormClass, BusyWidget):
 
     @QtCore.pyqtSlot(int)
     def leagueUpdate(self, index):
+        logger.info('leagueUpdate: ' + "".join(traceback.format_stack()))
         self.currentLeague = index + 1
         leagueTab = self.leagues.widget(index).findChild(QtWidgets.QTabWidget,"league"+str(index))
         if leagueTab:
             if leagueTab.currentIndex() == 0:
                 if time.time() - self.floodtimer > ANTIFLOOD:
                     self.floodtimer = time.time() 
-                    self.client.statsServer.send(dict(command="stats", type="league_table", league=self.currentLeague))
+                    #self.client.statsServer.send(dict(command="stats", type="league_table", league=self.currentLeague))
 
     @QtCore.pyqtSlot(int)
     def divisionsUpdate(self, index):
         if index == 0:
             if time.time() - self.floodtimer > ANTIFLOOD:
                 self.floodtimer = time.time()
-                self.client.statsServer.send(dict(command="stats", type="league_table", league=self.currentLeague))
+                #self.client.statsServer.send(dict(command="stats", type="league_table", league=self.currentLeague))
         
         elif index == 1:
             tab = self.currentLeague - 1
             if tab not in self.pagesDivisions:
-                    self.client.statsServer.send(dict(command="stats", type="divisions", league=self.currentLeague))
+                pass
+                    #self.client.statsServer.send(dict(command="stats", type="divisions", league=self.currentLeague))
         
     @QtCore.pyqtSlot(int)
     def divisionUpdate(self, index):
         if time.time() - self.floodtimer > ANTIFLOOD:
             self.floodtimer = time.time()
-            self.client.statsServer.send(dict(command="stats", type="division_table",
-                                              league=self.currentLeague, division=index))
+            #self.client.statsServer.send(dict(command="stats", type="division_table",
+            #                                  league=self.currentLeague, division=index))
         
     def createDivisionsTabs(self, divisions):
         userDivision = ""
@@ -113,10 +116,11 @@ class StatsWidget(BaseClass, FormClass, BusyWidget):
             if name == userDivision:
                 foundDivision = True
                 pages.setCurrentIndex(index)
-                self.client.statsServer.send(dict(command="stats", type="division_table", league=league, division=index))
+                #self.client.statsServer.send(dict(command="stats", type="division_table", league=league, division=index))
         
         if not foundDivision:
-            self.client.statsServer.send(dict(command="stats", type="division_table", league=league, division=0))
+            pass
+            #self.client.statsServer.send(dict(command="stats", type="division_table", league=league, division=0))
         
         pages.currentChanged.connect(self.divisionUpdate)
         return pages
@@ -196,9 +200,9 @@ class StatsWidget(BaseClass, FormClass, BusyWidget):
 
         me = self.client.players[self.client.login]
         if me.league is not None:
-            self.leagues.setCurrentIndex(me.league - 1)
+            self.leagues.setCurrentIndex(me.league)
         else:
-            self.leagues.setCurrentIndex(5)  # -> 5 = direct to Ladder Ratings
+            self.leagues.setCurrentIndex(0)  # -> 5 = direct to Ladder Ratings
 
         if self.loaded:
             return

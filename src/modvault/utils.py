@@ -4,6 +4,9 @@ import urllib.request, urllib.error, urllib.parse
 import re
 import shutil
 
+import tempfile
+import zipfile
+
 from PyQt5 import QtCore, QtWidgets, QtGui
 
 from util import PREFSFILENAME
@@ -403,3 +406,20 @@ def removeMod(mod):
     return True
     # we don't update the installed mods, because the operating system takes
     # some time registering the deleted folder.
+
+# from http://stackoverflow.com/questions/1855095/how-to-create-a-zip-archive-of-a-directory-in-python
+def zipdir(path, zipf, fname):
+    # zips the entire directory path to zipf. Every file in the zipfile starts with fname.
+    # So if path is "/foo/bar/hello" and fname is "test" then every file in zipf is of the form "/test/*.*"
+    path = os.path.normcase(path)
+    if path[-1] in r'\/':
+        path = path[:-1]
+    short = os.path.split(path)[0]
+    for root, dirs, files in os.walk(path):
+        for f in files:
+            name = os.path.join(os.path.normcase(root), f)
+            n = name[len(os.path.commonprefix([name, path])):]
+            if n[0] == "\\":
+                n = n[1:]
+            zipf.write(name, os.path.join(fname, n))
+

@@ -17,6 +17,9 @@
    <number>0</number>
   </property>
   <widget class="QWidget" name="ladderTab">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <attribute name="title">
     <string>Ladder</string>
    </attribute>
@@ -29,7 +32,20 @@
       <property name="currentIndex">
        <number>0</number>
       </property>
+      <widget class="QWidget" name="LadderRatings">
+       <attribute name="title">
+        <string>Ladder Ratings</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="margin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
       <widget class="QWidget" name="tab1">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>Scouts</string>
        </attribute>
@@ -70,6 +86,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tab2">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>Tech 1</string>
        </attribute>
@@ -110,6 +129,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tab3">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>Tech 2</string>
        </attribute>
@@ -150,6 +172,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tab4">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>Tech 3</string>
        </attribute>
@@ -190,6 +215,9 @@
        </layout>
       </widget>
       <widget class="QWidget" name="tab5">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <attribute name="title">
         <string>XPs</string>
        </attribute>
@@ -227,16 +255,6 @@
           </widget>
          </widget>
         </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="LadderRatings">
-       <attribute name="title">
-        <string>Ladder Ratings</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_2">
-        <property name="margin">
-         <number>0</number>
-        </property>
        </layout>
       </widget>
      </widget>

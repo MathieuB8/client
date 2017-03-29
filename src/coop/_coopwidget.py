@@ -162,9 +162,10 @@ class CoopWidget(FormClass, BaseClass, BusyWidget):
         """
         ask the server for stats
         """
-        if self.selectedItem:
-            self.client.statsServer.send(dict(command="coop_stats", mission=self.selectedItem.uid,
-                                              type=self.tabLeaderWidget.currentIndex()))
+        pass
+        #if self.selectedItem:
+        #    self.client.statsServer.send(dict(command="coop_stats", mission=self.selectedItem.uid,
+        #                                      type=self.tabLeaderWidget.currentIndex()))
 
     def coopListClicked(self, item):
         """
@@ -179,8 +180,8 @@ class CoopWidget(FormClass, BaseClass, BusyWidget):
 
         if item != self.selectedItem: 
             self.selectedItem = item
-            self.client.statsServer.send(dict(command="coop_stats", mission=item.uid,
-                                              type=self.tabLeaderWidget.currentIndex()))
+        #    self.client.statsServer.send(dict(command="coop_stats", mission=item.uid,
+        #                                      type=self.tabLeaderWidget.currentIndex()))
 
     def coopListDoubleClicked(self, item):
         """

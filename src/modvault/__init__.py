@@ -49,10 +49,13 @@ import zipfile
 from PyQt5 import QtCore, QtWidgets, QtGui
 
 from modvault.utils import *
+import api.methods
 from .modwidget import ModWidget
 from .uploadwidget import UploadModWidget
 from .uimodwidget import UIModWidget
 from ui.busy_widget import BusyWidget
+
+import traceback
 
 import util
 import logging
@@ -85,8 +88,9 @@ class ModVault(FormClass, BaseClass, BusyWidget):
 
         self.modList.setItemDelegate(ModItemDelegate(self))
         self.modList.itemDoubleClicked.connect(self.modClicked)
-        self.searchButton.clicked.connect(self.search)
+        self.refreshButton.clicked.connect(self.refresh)
         self.searchInput.returnPressed.connect(self.search)
+        self.searchInput.textChanged.connect(self.searchTextChanged)
         self.uploadButton.clicked.connect(self.openUploadForm)
         self.UIButton.clicked.connect(self.openUIModForm)
 
@@ -100,6 +104,10 @@ class ModVault(FormClass, BaseClass, BusyWidget):
         self.showType = "all"
         self.searchString = ""
 
+        self.searchTimer = QtCore.QTimer(self)
+        self.searchTimer.setSingleShot(True)
+        self.searchTimer.timeout.connect(self.searchTimeout)
+
         self.mods = {}
         self.uids = [mod.uid for mod in getInstalledMods()]
 
@@ -108,6 +116,10 @@ class ModVault(FormClass, BaseClass, BusyWidget):
         """
         See above for the keys neccessary in message.
         """
+
+        #logger.info('modInfo:\n' + "".join(traceback.format_stack()))
+
+
         uid = message["uid"]
         if not uid in self.mods:
             mod = ModItem(self, uid)
@@ -149,8 +161,105 @@ class ModVault(FormClass, BaseClass, BusyWidget):
         widget = ModWidget(self, item)
         widget.exec_()
 
+    def refresh(self):
+        self.refreshButton.setText('......')
+        self.refreshButton.setEnabled(False)
+
+        #self._api_req = download_mod_list(self.client.Api, self.modlist_finished, self.modlist_error)
+        api.methods.download_mod_list(self.client.Api, 250, 1, self.modlist_finished, self.modlist_error)
+
+    def modlist_finished(self, resp):
+        logger.debug('modlist returned')
+
+        page_size = resp['meta']['page']['limit']
+        page_number = resp['meta']['page']['number']
+        page_total = resp['meta']['page']['totalPages']
+
+        if page_total > page_number:
+            logger.debug('downloading modlist page {}'.format(page_number + 1))
+            api.methods.download_mod_list(self.client.Api, page_size, page_number + 1, self.modlist_finished, self.modlist_error)
+        else:
+            logger.debug('Finished downloading {} mod records'.format(resp['meta']['page']['totalRecords']))
+            self.refreshButton.setText('Refresh')
+            self.refreshButton.setEnabled(True)
+
+
+        # make a dict from the 'included' data
+        mod_versions = {vid: mod_version for vid, mod_version in [(mv['id'], mv) for mv in resp['included'] ]}
+        mods = resp['data']
+
+        for mod_data in mods:
+            mod_version = mod_versions[mod_data['relationships']['latestVersion']['data']['id']]
+            uid = mod_data['id']
+            if uid in self.mods:
+                mod = self.mods[uid]
+            else:
+                mod = ModItem(self, uid)
+                self.mods[uid] = mod
+                self.modList.addItem(mod)
+            mod_attributes = {
+                'name': mod_data['attributes']['displayName'],
+                'played': 0,
+                'description': mod_version['attributes']['description'],
+                'version': mod_version['attributes']['version'],
+                'author': mod_data['attributes']['author'],
+                'downloads': 0,
+                'likes': 0,
+                'comments': [],
+                'bugreports': [],
+                'date': mod_version['attributes']['createTime'][:10],
+                'ui': mod_version['attributes']['type'] == 'UI',
+                'link': '',
+                'thumbnail': '',
+                'uploadedbyuser': ''
+                }
+            mod.update(mod_attributes)
+
+        #for mod_data in mods:
+        #    uid = mod_data['id']
+        #    if uid in self.mods:
+        #        mod = self.mods[uid]
+        #    else:
+        #        mod = ModItem(self, uid)
+        #        self.mods[uid] = mod
+        #        self.modList.addItem(mod)
+        #    mod_attributes = {
+        #        'name': mod_data['attributes']['display_name'],
+        #        'played': mod_data['attributes']['times_played'],
+        #        'description': mod_data['attributes']['description'],
+        #        'version': mod_data['attributes']['version'],
+        #        'author': mod_data['attributes']['author'],
+        #        'downloads': mod_data['attributes']['downloads'],
+        #        'likes': mod_data['attributes']['likes'],
+        #        'comments': [],
+        #        'bugreports': [],
+        #        'date': mod_data['attributes']['create_time'][:10],
+        #        'ui': mod_data['attributes']['type'] == 'UI',
+        #        'link': '',
+        #        'thumbnail': '',
+        #        'uploadedbyuser': ''
+        #        }
+        #    mod.update(mod_attributes)
+
+
+    def modlist_error(self, errstr):
+        logger.error(errstr)
+        QtWidgets.QMessageBox.information(self.client, "Mod List Error", errstr)
+
+    def searchTextChanged(self, newText):
+        if newText == "":
+            self.search()
+        else:
+            self.searchTimer.start(800)
+
+    def searchTimeout(self):
+        self.search()
+
     def search(self):
         """ Sending search to mod server"""
+
+        # Make sure timer is stopped, in case search was hit before timeout
+        self.searchTimer.stop()
 
         self.searchString = self.searchInput.text().lower()
         index = self.ShowType.currentIndex()
@@ -161,7 +270,7 @@ class ModVault(FormClass, BaseClass, BusyWidget):
         elif index == 2:
             typemod = 0
 
-        self.client.statsServer.send(dict(command="modvault_search", typemod=typemod, search=self.searchString))
+#        self.client.statsServer.send(dict(command="modvault_search", typemod=typemod, search=self.searchString))
 
         self.updateVisibilities()
 
@@ -306,7 +415,7 @@ class ModItem(QtWidgets.QListWidgetItem):
         self.comments = []  # every element is a dictionary with a
         self.bugreports = []  # text, author and date key
         self.date = None
-        self.isuidmod = False
+        self.isuimod = False
         self.uploadedbyuser = False
 
         self.thumbnail = None
@@ -324,7 +433,10 @@ class ModItem(QtWidgets.QListWidgetItem):
         self.likes = dic["likes"]
         self.comments = dic["comments"]
         self.bugreports = dic["bugreports"]
-        self.date = QtCore.QDateTime.fromTime_t(dic['date']).toString("yyyy-MM-dd")
+        if type(dic['date']) is str:
+            self.date = dic['date']
+        else:
+            self.date = QtCore.QDateTime.fromTime_t(dic['date']).toString("yyyy-MM-dd")
         self.isuimod = dic["ui"]
         self.link = dic["link"]  # Direct link to the zip file.
         self.thumbstr = dic["thumbnail"]  # direct url to the thumbnail file.

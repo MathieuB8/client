@@ -6,6 +6,8 @@ from enum import IntEnum
 
 from config import Settings
 
+import api
+
 logger = logging.getLogger(__name__)
 # logger.setLevel(logging.DEBUG)
 

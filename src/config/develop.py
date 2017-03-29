@@ -11,3 +11,4 @@ else:
 defaults = production_defaults.copy()
 defaults['host'] = 'test.faforever.com'
 defaults['client/logs/console'] = True
+defaults['api/baseUrl']= 'api.test.faforever.com'
