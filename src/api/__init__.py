@@ -18,6 +18,7 @@ class ApiSettings(object):
         self.clientId = settings.get(api_p + "clientId")
         self.clientSecret = settings.get(api_p + "clientSecret")
         self.accessTokenUri = settings.get(api_p + "accessTokenUri")
+        self.refreshToken = settings.get(api_p + "refreshToken")
 
 
 @with_logger
@@ -30,7 +31,7 @@ class OAuthHandler(object):
     """
     def __init__(self, settings):
         self._settings = settings
-        self._client = LegacyApplicationClient(self._settings.clientId)
+        self._client = LegacyApplicationClient(self._settings.clientId, refresh_token=self._settings.refreshToken)
         self._manager = None
         self._hasToken = False
         self._rep = None
@@ -44,6 +45,33 @@ class OAuthHandler(object):
         self._manager = manager
 
     def authorize(self, username, password):
+        if password:
+            self._logger.info('Trying to log in to api with user/password')
+            req = QtNetwork.QNetworkRequest()
+            req.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader,
+                          'application/x-www-form-urlencoded')
+            req.setRawHeader(b'Accept', b'application/json, application/vnd.api+json')
+            h_auth = b"Basic " + base64.b64encode(self._settings.clientId.encode() + b":" +
+                     self._settings.clientSecret.encode())
+            req.setRawHeader(b'Authorization', h_auth)
+            self._logger.debug('Preparing token grab with {}:{}'.format(self._settings.clientId,self._settings.clientSecret))
+
+            body = bytes(self._client.prepare_request_body(
+                username=username,
+                password=password,
+                client_id=self._settings.clientId), "utf-8")
+            self._rep = self._manager.post(QUrl(self._settings.accessTokenUri),
+                                           req, body, auth=False)
+            self._rep.finished.connect(self._on_authorized_response)
+            self._rep.error.connect(self._on_error)
+            self._rep.run()
+        elif self._client.refresh_token:
+            self._logger.info('Trying to log in to api with refresh token')
+            self.refresh()
+        else:
+            self._on_error('No password or refresh token for api access.')
+
+    def refresh(self):
         req = QtNetwork.QNetworkRequest()
         req.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader,
                       'application/x-www-form-urlencoded')
@@ -51,26 +79,11 @@ class OAuthHandler(object):
         h_auth = b"Basic " + base64.b64encode(self._settings.clientId.encode() + b":" +
                  self._settings.clientSecret.encode())
         req.setRawHeader(b'Authorization', h_auth)
-        self._logger.debug('Preparing token grab with {}:{}'.format(self._settings.clientId,self._settings.clientSecret))
-
-        body = bytes(self._client.prepare_request_body(
-            username=username,
-            password=password,
-            client_id=self._settings.clientId), "utf-8")
-        self._rep = self._manager.post(QUrl(self._settings.accessTokenUri),
-                                       req, body, auth=False)
-        self._rep.finished.connect(self._on_authorized_response)
-        self._rep.error.connect(self._on_error)
-        self._rep.run()
-
-
-    def refresh(self):
-        req = QtNetwork.QNetworkRequest()
-        req.setHeader(QtNetwork.QNetworkRequest.ContentTypeHeader,
-                      'application/x-www-form-urlencoded')
-        req.setRawHeader(b'Accept', b'application/json, application/vnd.api+json')
 
         url, _, body = self._client.prepare_refresh_token_request(self._settings.baseUrl + self._settings.accessTokenUri, client_id=self._settings.clientId)
+
+        self._logger.info(url)
+        self._logger.info(body)
 
         self._rep = self._manager.post(QUrl(url), req, body.encode(), auth=False)
         self._rep.finished.connect(self._on_authorized_response)
@@ -85,12 +98,14 @@ class OAuthHandler(object):
         self._rep = None
         try:
             body = json.dumps(reply)    # FIXME
-            self._logger.info(reply)
+#            self._logger.info(reply)
             self._client.parse_request_body_response(body)
         except OAuth2Error:
             return self._on_error("Failed to parse oauth: " + json.dumps(reply))
 
         expires_in = reply['expires_in']
+        refresh_token = reply['refresh_token']
+        Settings.set('api/refreshToken', refresh_token)
 
         self._hasToken = True
         self._manager.on_authorized(expires_in)
