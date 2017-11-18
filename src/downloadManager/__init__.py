@@ -137,7 +137,7 @@ class downloadManager(QtCore.QObject):
 
         local_path = False
         filename = os.path.basename(filepath)
-        logger.info("Finished download from " + urlstring)
+#        logger.info("Finished download from " + urlstring)
 
         reqlist = []
         if urlstring in self.mapRequests:
@@ -157,9 +157,9 @@ class downloadManager(QtCore.QObject):
             dler.dest.remove()
             filepath = "games/unknown_map.png"
             local_path = True
-            logger.debug("Web Preview failed for: " + filename)
-        else:
-            logger.debug("Web Preview used for: " + filename)
+#            logger.debug("Web Preview failed for: " + filename)
+#        else:
+#            logger.debug("Web Preview used for: " + filename)
 
         for requester in reqlist:
             if requester:
@@ -172,6 +172,7 @@ class downloadManager(QtCore.QObject):
     def _get_cachefile(self, name):
         imgpath = os.path.join(util.CACHE_DIR, name)
         img = QtCore.QFile(imgpath)
+        logger.debug(imgpath)
         img.open(QtCore.QIODevice.WriteOnly)
         return img, imgpath
 
@@ -187,7 +188,7 @@ class downloadManager(QtCore.QObject):
 
         url = VAULT_PREVIEW_ROOT + urllib.parse.quote(name) + ".png"
         if url not in self.mapRequests:
-            logger.info("Searching map preview for: " + name + " from " + url)
+#            logger.info("Searching map preview for: " + name + " from " + url)
             self.mapRequests[url] = []
 
             img, imgpath = self._get_cachefile(name + ".png.part")
@@ -202,7 +203,7 @@ class downloadManager(QtCore.QObject):
 
     def downloadModPreview(self, url, name, requester):
         if not url in self.modRequests:
-            logger.debug("Searching mod preview for: " + str(os.path.basename(url).rsplit('.', 1)[0]))
+#            logger.debug("Searching mod preview for: " + str(os.path.basename(url).rsplit('.', 1)[0]))
             self.modRequests[url] = []
 
             img, imgpath = self._get_cachefile(name + '.part')

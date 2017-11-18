@@ -27,6 +27,7 @@ class ApiRequest(QObject):
         else:
             self._loger.warn('Deferring API Request to wait for auth')
             self._manager.authorized.connect(self.at_auth)
+            self._manager.authorisation_needed.emit()
 
     def send_request(self):
         self._logger.debug('send_request')

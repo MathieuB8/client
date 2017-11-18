@@ -246,6 +246,7 @@ def __exportPreviewFromMap(mapname, positions=None):
         logger.debug("Writing into cache instead.")
         mapdir = os.path.join(util.CACHE_DIR, mapname)
         if not os.path.isdir(mapdir):
+            logger.debug('Creating cache dir %s', mapdir)
             os.mkdir(mapdir)
 
     previewsmallname = os.path.join(mapdir, mapname + ".small.png")
@@ -253,7 +254,7 @@ def __exportPreviewFromMap(mapname, positions=None):
     previewddsname = os.path.join(mapdir, mapname + ".dds")
     cachepngname = os.path.join(util.CACHE_DIR, mapname + ".png")
 
-    logger.debug("Generating preview from user maps for: " + mapname)
+    logger.debug("Generating preview from user maps for: " + mapname + ' to: ' + cachepngname)
     logger.debug("Using directory: " + mapdir)
 
     # Unknown / Unavailable mapname?

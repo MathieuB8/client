@@ -141,6 +141,7 @@ class ApiManager(QObject):
     delegates authorization to OAuthHandler, abstracts host.
     """
     authorized = pyqtSignal()
+    authorisation_needed = pyqtSignal()
 
     def __init__(self, network_manager, settings, oauth):
         QObject.__init__(self)

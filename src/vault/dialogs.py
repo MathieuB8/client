@@ -82,6 +82,7 @@ def downloadVaultAssetNoMsg(url, target_dir, exist_handler, name, category,
     logging things.
     """
     global _global_nam
+    logger.debug("Downloading {} to {}".format(url, target_dir))
     msg = None
     output = io.BytesIO()
     capitCat = category[0].upper() + category[1:]

@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest, QNetworkReply
 from fa.replay import replay
 from config import Settings
+from pprint import pformat
 import util
 import os
 import fa
@@ -461,12 +462,6 @@ class ReplayVaultWidgetHandler(object):
         if modListIndex:
             w.modList.setCurrentIndex(modListIndex)
 
-        self._w.searchInfoLabel.setText(self.searchInfo)
-        self.searching = True
-        self.onlineReplays = {}
-        self.updateOnlineTree()
-        self._w.replayInfos.clear()
-
         featuredMod = w.modList.currentText() if modListIndex else None
 
         self.searchFilter = (
@@ -478,15 +473,25 @@ class ReplayVaultWidgetHandler(object):
 
         logger.debug(self.searchFilter)
 
-        api.methods.search_replays(self.searchFilter[0], self.searchFilter[1], self.searchFilter[2], self.searchFilter[3], self.client.Api, 250, 1, self.searchVaultFinished, self.searchVaultError)
+        # if nothing is in search filters, just do a refresh:
+        if all(not f for f in self.searchFilter):
+            self.refresh()
+        else:
+            self._w.searchInfoLabel.setText(self.searchInfo)
+            self.searching = True
+            self.onlineReplays = {}
+            self.updateOnlineTree()
+            self._w.replayInfos.clear()
 
-#        self.vault_connection.connect()
-#        self.vault_connection.send(dict(command="search",
-#                                        rating=w.minRating.value(),
-#                                        map=w.mapName.text(),
-#                                        player=w.playerName.text(),
-#                                        mod=w.modList.currentText()))
-        self._w.onlineTree.clear()
+            api.methods.search_replays(self.searchFilter[0], self.searchFilter[1], self.searchFilter[2], self.searchFilter[3], self.client.Api, 250, 1, self.searchVaultFinished, self.searchVaultError)
+
+    #        self.vault_connection.connect()
+    #        self.vault_connection.send(dict(command="search",
+    #                                        rating=w.minRating.value(),
+    #                                        map=w.mapName.text(),
+    #                                        player=w.playerName.text(),
+    #                                        mod=w.modList.currentText()))
+            self._w.onlineTree.clear()
 
     def searchVaultFinished(self, resp):
         logger.debug('searchvault returned')
@@ -507,6 +512,7 @@ class ReplayVaultWidgetHandler(object):
             api.methods.search_replays(self.searchFilter[0], self.searchFilter[1], self.searchFilter[2], self.searchFilter[3], self.client.Api, page_size, page_number + 1, self.searchVaultFinished, self.searchVaultError)
 
         self.processReplays(resp)
+        self.updateOnlineTree()
 
     def listVaultFinished(self, resp):
         logger.debug('listvault returned')
@@ -517,8 +523,8 @@ class ReplayVaultWidgetHandler(object):
         self._w.replayInfos.clear()
         self._w.RefreshResetButton.setText("Reset Search to Recent")
 
-
         self.processReplays(resp, True)
+        self.updateOnlineTree()
 
     def processReplays(self, resp, validTimeOnly=False):
         """
@@ -540,14 +546,18 @@ class ReplayVaultWidgetHandler(object):
             try:
                 uid = game['id']
                 mod_id = game['relationships']['featuredMod']['data']['id']
-                map_version_id = game['relationships']['mapVersion']['data']['id']
-                map_version = includes['mapVersion'][map_version_id]
-                map_id = map_version['relationships']['map']['data']['id']
+                if 'mapVersion' in game['relationships'] and 'data' in game['relationships']['mapVersion'] and game['relationships']['mapVersion']['data']:
+                    map_version_id = game['relationships']['mapVersion']['data']['id']
+                    map_version = includes['mapVersion'][map_version_id]
+                    map_id = map_version['relationships']['map']['data']['id']
+                    map_fn = os.path.basename(map_version['attributes']['filename'])
+                else:
+                    map_fn = '[Unknown]'
                 map_ = includes['map'][map_id]
                 featured_mod = includes['featuredMod'][mod_id]
                 message = {
                     'name': game['attributes']['name'],
-                    'map': map_version['attributes']['filename'],
+                    'map': map_fn,
                     'map_displayname': map_['attributes']['displayName'],
                     # TODO: decode
                     # 'start': game['attributes']['startTime'],
@@ -577,8 +587,9 @@ class ReplayVaultWidgetHandler(object):
                 self.onlineReplays[uid].update(message, self.client)
                 self.onlineReplays[uid].infoPlayers(players)
             except:
-                logger.exception('error parsing game {}'.format(uid))
+                logger.exception('error parsing game {}:\n{}'.format(uid, pformat(game)))
                 continue
+        logger.debug('processed {} replays'.format(len(games)))
 
     def searchVaultError(self, errstr):
         logger.error(errstr)
@@ -652,7 +663,7 @@ class ReplayVaultWidgetHandler(object):
         self.searching = True
         self._w.searchInfoLabel.setText(self.searchInfo)
 
-        api.methods.recent_replays(self.client.Api, 300, 1, self.listVaultFinished, self.searchVaultError)
+        api.methods.recent_replays(self.client.Api, 50, 1, self.listVaultFinished, self.searchVaultError)
 
         if reset:
             self._w.minRating.setValue(0)

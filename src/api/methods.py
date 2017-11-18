@@ -59,7 +59,7 @@ def search_replays(minRating, playerName, mapName, featuredMod, api, page_size, 
     return req
 
 def recent_replays(api, page_size, page_number, on_finished, on_error):
-    searchFilter = 'endTime=isnull=false;'
+    searchFilter = 'endTime=isnull=false'
 
     req = api._get('/data/game', {
         'include': 'mapVersion,mapVersion.map,playerStats,playerStats.player,featuredMod',
