@@ -14,6 +14,7 @@ from config import Settings
 
 from model.game import GameState
 
+
 """
 A chatter is the representation of a person on IRC, in a channel's nick list.
 There are multiple chatters per channel.
@@ -371,9 +372,9 @@ class Chatter(QtWidgets.QTableWidgetItem):
         elif item == self.statusItem:
             self._interactWithGame()
 
-    def _interactWithGame(self):
+    def _interactWithGame(self, *duration):
         game = self.user_game
-        if game is None or game.closed():
+        if game is None or game.closed() or (duration is not None and duration[0] < 5 * 60) :
             return
 
         url = game.url(self.user_player.id)
@@ -439,7 +440,7 @@ class Chatter(QtWidgets.QTableWidgetItem):
                 else:
                     wait_str = time.strftime('%M:%S', time.gmtime(5 * 60 - time_running))
                     action_str = "WAIT " + wait_str + " to view Live Replay"
-                menu_add(action_str, self._interactWithGame, True)
+                menu_add(action_str, lambda: self._interactWithGame(time_running), True)
 
         # Replays in vault
         if player is not None:  # not for irc user
