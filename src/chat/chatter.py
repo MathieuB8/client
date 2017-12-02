@@ -7,6 +7,9 @@ import urllib.request, urllib.error, urllib.parse
 from fa.replay import replay
 import util
 import client
+import api.methods
+import logging
+logger = logging.getLogger(__name__)
 from config import Settings
 
 from model.game import GameState
@@ -320,8 +323,49 @@ class Chatter(QtWidgets.QTableWidgetItem):
             color = pcolors.getUserColor(_id, name)
         self.setForeground(QtGui.QColor(color))
 
+    def nickUsedByOther(self, resp):
+        result=''
+        logger.info('nickUsedByOther api response is : '+str(resp))
+        if resp.get('data')!= None and len(resp['data']) >= 1:
+            for ply in resp['data']:
+                if ply['type']=='player' and ply['attributes']['login'] != self.user.name:
+                        result+=(ply['attributes']['login']+'\n')
+        if len(result) > 1:
+            result = 'It has been previously been used by :\n' + str(result)
+        else:
+            result='It has never been used by anyone else.'
+        QtWidgets.QMessageBox.about(self.parent, "Aliases2", str(result))
+        return result
+
+    def nickUsedByOther_error(self,resp):
+        logger.error('nickUsedByOther error : '+str(resp))
+        return -5
+
+    def namesPreviouslyKnownResult_error(self,resp):
+        logger.error('namesPreviouslyKnownResult error : '+str(resp))
+        return -5
+
+    def namesPreviouslyKnownResult(self,response):
+        result=''
+        nicklists=[]
+        logger.info('namesPreviouslyKnownResult api response is : '+str(response))
+        if len(response['data']) < 1:
+            result='The name ' + self.user.name + ' has never been used or the user has never changed its name'+'\n\n'+result
+        else:
+            result2=api.methods.nickUsedByOther(self.chat_widget.client.Api,250,1,str(self.user.name),self.nickUsedByOther,self.nickUsedByOther_error)
+            if response.get('included')!= None and len(response['included']) >= 1:
+                nicklists.append('The player ' + self.user.name + ' has previously been known as :')
+                for allnicks in response['included']:
+                    if allnicks['type']=='nameRecord' and allnicks['attributes']['name'] not in nicklists:
+                        nicklists.append(allnicks['attributes']['name'])
+            else:
+                nicklists.append('The name '+ self.user.name +' is not currently owned by any player.')
+            result='\n'.join(nicklists)+'\n\n'+result
+        QtWidgets.QMessageBox.about(self.parent, "Aliases", str(result))
+        return str(result)
+
     def viewAliases(self):
-        QtGui.QDesktopServices.openUrl(QUrl("{}?name={}".format(Settings.get("USER_ALIASES_URL"), self.user.name)))
+        result=api.methods.namesPreviouslyKnown(self.chat_widget.client.Api,250,1,str(self.user.name),self.namesPreviouslyKnownResult,self.namesPreviouslyKnownResult_error)
 
     def selectAvatar(self):
         avatarSelection = AvatarWidget(self.chat_widget.client, self.user.name, personal=True)

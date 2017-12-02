@@ -7,7 +7,8 @@ from .request import ApiRequest
 from config import Settings
 
 from decorators import with_logger
-
+import logging
+import sys
 
 class ApiSettings(object):
     def __init__(self, settings = None):
@@ -188,6 +189,7 @@ class ApiManager(QObject):
         return req
 
     def get(self, endpoint, request, auth=False):
+        self._logger.info('Request get:' + str(endpoint).replace('%3D','=').replace('%26','&'))
         return self._op(endpoint, request, self._network_manager.get, "GET",
                         auth)
 
@@ -216,7 +218,7 @@ class MockSettings(object):
         self.clientSecret = b'6035bd78-7730-11e5-8bcf-feff819cdc9f'
 
 
-LOGIN = "OppressiveDuke"
+LOGIN = "Surtsan" #"OppressiveDuke"
 PASSWORD = "foo"
 
 
