@@ -586,6 +586,9 @@ class ClientWindow(FormClass, BaseClass):
         # spookys unitDB (will be moved to site)
         # self.unitdbWebView.setUrl(QtCore.QUrl("http://spooky.github.io/unitdb/#/"))
 
+
+        self.tournamentsWebView.setUrl(QtCore.QUrl("http://spooky.github.io/unitdb/"))
+
         self.warnPlayer = QtWidgets.QLabel(self)
         self.warnPlayer.setText(
             "A player of your skill level is currently searching for a 1v1 game. Click a faction to join them! ")
