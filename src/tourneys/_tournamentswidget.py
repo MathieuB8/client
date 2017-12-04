@@ -10,7 +10,6 @@ import secondaryServer
 
 FormClass, BaseClass = util.THEME.loadUiType("tournaments/tournaments.ui")
 
-
 class TournamentsWidget(FormClass, BaseClass):
     """ list and manage the main tournament lister """
 
