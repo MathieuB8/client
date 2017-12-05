@@ -30,7 +30,7 @@ class NewsItemDelegate(QtWidgets.QStyledItemDelegate):
 
         # clear icon and text before letting the control draw itself because we're rendering these parts ourselves
         option.icon = QtGui.QIcon()
-        option.text = ""  
+        option.text = ""
         option.widget.style().drawControl(QtWidgets.QStyle.CE_ItemViewItem, option, painter, option.widget)
 
         # Shadow (100x100 shifted 8 right and 8 down)
