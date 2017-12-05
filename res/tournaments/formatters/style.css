@@ -12,6 +12,19 @@ QListWidget::item
     border: 0px
 }
 
+""" QListWidget:item:selected:active {
+                                     background: gray;
+                                }
+                                QListWidget:item:selected:!active {
+                                     background: gray;
+                                }
+                                QListWidget:item:selected:disabled {
+                                     background: gray;
+                                }
+                                QListWidget:item:selected:!disabled {
+                                     background: gray;
+                                }
+
 
 /*QListWidget::item::hover
 {
