@@ -44,11 +44,15 @@ class TournamentsWidget(FormClass, BaseClass):
         util.THEME.setStyleSheet(self, "tournaments/formatters/style.css")
         self.show_tournaments_informations()
 
+    # QtWebEngine has no user CSS support yet, so let's just prepend it to the HTML
+    def _injectCSS(self, body):
+        return '<style type="text/css">{}</style>'.format(self.CSS) + body
+
+
     def itemChanged(self,current,previous):
         text=str(current.data(QtCore.Qt.UserRole).name)+'\n\nDescription : '+str(current.data(QtCore.Qt.UserRole).description)+'\n\nNumber of participants : '+str(current.data(QtCore.Qt.UserRole).number_of_participants)+'\n\nStart time : '+str(current.data(QtCore.Qt.UserRole).start_time)+'\n\nTournament type : '+str(current.data(QtCore.Qt.UserRole).tournament_type)
         self.currentTournamentDetails.setText(str(text))
-        url=str(current.data(QtCore.Qt.UserRole).full_challonge_url+'/module')
-        #url='https://faforever.com/competitive/tournaments'
+        url=str(current.data(QtCore.Qt.UserRole).live_image_url)
         self.tournamentsWebView.setUrl(QUrl(url))
 
     def tourneys_general_information_error(self,resp):
