@@ -13,33 +13,16 @@ QListWidget::item
 }
 
 """ QListWidget:item:selected:active {
-                                     background: gray;
-                                }
-                                QListWidget:item:selected:!active {
-                                     background: gray;
-                                }
-                                QListWidget:item:selected:disabled {
-                                     background: gray;
-                                }
-                                QListWidget:item:selected:!disabled {
-                                     background: gray;
-                                }
-
-
-/*QListWidget::item::hover
-{
-    background-color: #555555;
-}*/
-
-QVBoxLayout
-{
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.4;
-    color: lightgrey;
-    background-color: rgb(50,50,50);
-    border: 0px
-
+    background: gray;
+}
+QListWidget:item:selected:!active {
+    background: gray;
+}
+QListWidget:item:selected:disabled {
+    background: gray;
+}
+QListWidget:item:selected:!disabled {
+    background: gray;
 }
 
 QWidget
@@ -47,41 +30,7 @@ QWidget
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     line-height: 1.4;
-    /*color: lightgrey;*/
     background-color: rgb(50,50,50);
     border: 0px
 
 }
-
-/*
-QTabWidget
-{
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.4;
-    color: lightgrey;
-    background-color: rgb(50,50,50);
-    border: 0px
-}
-*/
-QWebEngineView
-{
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.4;
-    color: lightgrey;
-    background-color: rgb(50,50,50);
-    border: 0px
-
-}
-
-QHBoxLayout
-{
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.4;
-    color: lightgrey;
-    background-color: rgb(50,50,50);
-    border: 0px
-}
-

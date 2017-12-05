@@ -3,36 +3,15 @@ from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import QUrl
 import util
 import secondaryServer
-FormClass, BaseClass = util.THEME.loadUiType("tournaments/tournaments.ui")
-
-from ui.busy_widget import BusyWidget
-
 import api.methods
 import logging
 logger = logging.getLogger(__name__)
+FormClass, BaseClass = util.THEME.loadUiType("tournaments/tournaments.ui")
+from tourneys.tournamentinfo import TournamentInfo
 
-class TournamentInfo():
-    def __init(self, client, *args, **kwargs):
-        self.name=''
-        self.state=''
-        self.number_of_participants=''
-        self.tournament_type=''
-        self.live_image_url=''
-        self.start_time=''
-        self.full_challonge_url=''
-        self.description=''
 
 class TournamentsWidget(FormClass, BaseClass):
     """ list and manage the main tournament lister """
-
-    '''self.textUpQLabel    = QtGui.QLabel()
-    self.textDownQLabel  = QtGui.QLabel()
-
-    def setTextUp (self, text):
-        self.textUpQLabel.setText(text)
-
-    def setTextDown (self, text):
-        self.textDownQLabel.setText(text)'''
 
     def __init__(self, client, *args, **kwargs):
         BaseClass.__init__(self, *args, **kwargs)
@@ -43,11 +22,6 @@ class TournamentsWidget(FormClass, BaseClass):
         self.tourneyList.currentItemChanged.connect(self.itemChanged)
         util.THEME.setStyleSheet(self, "tournaments/formatters/style.css")
         self.show_tournaments_informations()
-
-    # QtWebEngine has no user CSS support yet, so let's just prepend it to the HTML
-    def _injectCSS(self, body):
-        return '<style type="text/css">{}</style>'.format(self.CSS) + body
-
 
     def itemChanged(self,current,previous):
         text=str(current.data(QtCore.Qt.UserRole).name)+'\n\nDescription : '+str(current.data(QtCore.Qt.UserRole).description)+'\n\nNumber of participants : '+str(current.data(QtCore.Qt.UserRole).number_of_participants)+'\n\nStart time : '+str(current.data(QtCore.Qt.UserRole).start_time)+'\n\nTournament type : '+str(current.data(QtCore.Qt.UserRole).tournament_type)
@@ -60,8 +34,6 @@ class TournamentsWidget(FormClass, BaseClass):
         return -5
 
     def tourneys_general_information_result(self,response):
-        result=[]
-        # Create QCustomQWidget
         logger.info('tourneys_general_information_result api response is : '+str(response))
         for alltournaments in reversed(response):
             if alltournaments.get('tournament')!= None and len(alltournaments['tournament']) >= 1:
