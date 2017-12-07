@@ -18,27 +18,34 @@ class TutorialsWidget(FormClass, BaseClass):
         util.THEME.setStyleSheet(self, "tutorials/formatters/style.css")
 
         self.label_image_video1.setPixmap(QtGui.QPixmap('res/tutorials/TopTipsFAF.png'))
-        self.label_text_video1.setText('The best tips to improve on forged alliance.')
-        self.label_link_video1.setText('<a href="https://www.youtube.com/watch?v=Qhrz0rZmnLU">Link to video</a>')
-        self.label_link_video1.setOpenExternalLinks(True)
+        self.label_text_video1.insertHtml('''<center>
+        The best tips to improve on forged alliance.<br>
+        <a href='https://www.youtube.com/watch?v=Qhrz0rZmnLU'><span style="color:#009933;">Link to video</span></a>
+        </center>''')
 
         self.label_image_video2.setPixmap(QtGui.QPixmap('res/tutorials/ClientPresentation.png'))
-        self.label_text_video2.setText('Guide on how to use the client.')
-        self.label_link_video2.setText('<a href="https://www.youtube.com/watch?v=tqCs0WVGT_I">Link to video</a>')
-        self.label_link_video2.setOpenExternalLinks(True)
+        self.label_text_video2.insertHtml('''<center>
+        Guide on how to use the client.<br>
+        <a href='https://www.youtube.com/watch?v=tqCs0WVGT_I'><span style="color:#009933;">Link to video</span></a>
+        </center>''')
 
-        self.tutorial_text_browser.insertHtml('''
+        self.tutorial_text_browser.insertHtml('''<center>
         Welcome to forged alliance forever ! If you want ever more information about this game you can check these tutorials in order to improve :<br>
-        <a href='https://wiki.faforever.com/index.php?title=Main_Page'>Link to wiki</a><br>
-        need more link btw<br>
+        <a href='https://wiki.faforever.com/index.php?title=Main_Page'><span style="color:#009933;">Link to wiki</span></a><br>
         <br>
         You can also watch streams of better players to get an idea of the way to play :<br>
-        <a href="https://www.twitch.tv/directory/game/Supreme%20Commander%3A%20Forged%20Alliance">Link to twitch website</a><br>
+        <a href="https://www.twitch.tv/directory/game/Supreme%20Commander%3A%20Forged%20Alliance"><span style="color:#009933;">Link to twitch website</span></a><br>
         <br><br>
         You can also watch these youtube video which will help you improve :<br>
-        need more link btw<br>
-        <br>
-        Here are some challenges if you want to improve on the game too :<br>
+        <a href=https://www.youtube.com/channel/UCJYYaFbqPqbNkvgJAqrhC2A/videos"><span style="color:#009933;">Link to Heaven youtube videos</span></a><br>
+        <br><br>
+        Some trainers are also available to help you improve on the game, so don't hesitate to contact them at all !<br>
+        You can ask for one in #aeolus or  in #newbie channel or find a name to contact on this topic :<br>
+        <a href ="http://forums.faforever.com/viewtopic.php?f=2&t=1614"><span style="color:#009933;">Your Personal Trainer Team</span></a><br>
+        <span style="color:#009933;">(todo, not working)Ask if a personal trainer is available</span>
+        </center>''')
+
+        '''Here are some challenges if you want to improve on the game too :<br>
         todo<br>
         <br>
         Here are some training maps (made by speed2) :<br>
@@ -53,13 +60,6 @@ class TutorialsWidget(FormClass, BaseClass):
         [] : Reach 500 ladder rating<br>
         [] : Play 30 different maps on custom games<br>
         [] : Reach 1000 global rating<br>
-        [] : Reach 1000 ladder rating<br>
-        <br><br>
-        Some trainers are also available to help you improve on the game, so don't hesitate to contact them at all !<br>
-        You can ask for one in #aeolus or  in #newbie channel or find a name to contact on this topic :<br>
-        <a href ="http://forums.faforever.com/viewtopic.php?f=2&t=1614">Your Personal Trainer Team</a><br>
-        ''')
-
-
+        [] : Reach 1000 ladder rating<br>'''
 
         logger.info("Tutorials instantiated.")
