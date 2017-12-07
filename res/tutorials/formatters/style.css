@@ -1,0 +1,27 @@
+QWidget
+{
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    background-color: rgb(50,50,50);
+}
+
+QLabel
+{
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    background-color: rgb(50,50,50);
+
+}
+
+QGridLayout
+{
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    background-color: rgb(50,50,50);
+}
+QTextBrowser
+{
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    background-color: rgb(50,50,50);
+}
