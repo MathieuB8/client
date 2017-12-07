@@ -19,13 +19,13 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout_3">
+  <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
     <layout class="QVBoxLayout" name="verticalLayout">
      <item>
-      <widget class="QTabWidget" name="tutorial_tab_widget">
+      <widget class="QTabWidget" name="topTabs">
        <property name="currentIndex">
-        <number>0</number>
+        <number>2</number>
        </property>
        <widget class="QWidget" name="Main_tutorial_tab">
         <property name="sizePolicy">
@@ -167,7 +167,7 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="3" column="0" colspan="2">
-            <widget class="QTextBrowser" name="tutorial_text_browser">
+            <widget class="QTextBrowser" name="tutorial_main_text_browser">
              <property name="styleSheet">
               <string notr="true"/>
              </property>
@@ -287,7 +287,7 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="3" column="0" colspan="2">
-            <widget class="QTextBrowser" name="e"/>
+            <widget class="QTextBrowser" name="tutorial_tutorialsmaps_text_browser"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="a">
@@ -383,7 +383,7 @@ p, li { white-space: pre-wrap; }
             </widget>
            </item>
            <item row="3" column="0" colspan="2">
-            <widget class="QTextBrowser" name="j"/>
+            <widget class="QTextBrowser" name="tutorial_achievements_text_browser"/>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="f">
