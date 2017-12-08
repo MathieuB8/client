@@ -35,13 +35,13 @@ class TutorialsWidget(FormClass, BaseClass):
         self.map3_pushbutton_tutorials.setFlat(True)
         map=MapTutorial('res/tutorials/map1.png','FAF_TUT_Theta_BO')
         self.maps_tutorial_list.append(map)
-        map2=MapTutorial('res/tutorials/map2.png','FAF_TUT_Theta_BO')
+        map2=MapTutorial('res/tutorials/map2.png','FAF_TUT_FourLeaf_BO')
         self.maps_tutorial_list.append(map2)
-        map3=MapTutorial('res/tutorials/map3.png','FAF_TUT_Theta_BO')
+        map3=MapTutorial('res/tutorials/map3.png','FAF_TUT_Loki_BO')
         self.maps_tutorial_list.append(map3)
-        map4=MapTutorial('res/tutorials/map4.png','FAF_TUT_Theta_BO')
+        map4=MapTutorial('res/tutorials/map4.png','FAF_TUT_SummerDuel_BO')
         self.maps_tutorial_list.append(map4)
-        map5=MapTutorial('res/tutorials/map5.png','FAF_TUT_Theta_BO')
+        map5=MapTutorial('res/tutorials/map5.png','FAF_TUT_Loki_BO')
         self.maps_tutorial_list.append(map5)
         map6=MapTutorial('res/tutorials/map6.png','FAF_TUT_Theta_BO')
         self.maps_tutorial_list.append(map6)
@@ -114,9 +114,8 @@ class TutorialsWidget(FormClass, BaseClass):
 
 
     def start_tutorial(self,button_number):
-
-
-        pass
+        real_index_of_video = self.current_index_of_maps_tutorials_list + button_number
+        self.client.start_tutorial_map_zawa(self.maps_tutorial_list[real_index_of_video].map_name)
 
     def backup(self):
 
