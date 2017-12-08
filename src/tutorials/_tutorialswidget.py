@@ -4,7 +4,10 @@ from fa.replay import replay
 import util
 import os
 import fa
+from PyQt5.QtGui import QIcon, QPixmap
 from tutorials.tutorialsytvideo import TutorialsVideo
+from tutorials.maptutorial import MapTutorial
+
 
 import logging
 logger = logging.getLogger(__name__)
@@ -14,7 +17,9 @@ FormClass, BaseClass = util.THEME.loadUiType("tutorials/tutorials.ui")
 class TutorialsWidget(FormClass, BaseClass):
 
     video_list = []
+    maps_tutorial_list =[]
     current_index_of_video_list = 0
+    current_index_of_maps_tutorials_list = 1
 
     def setup_initial_videos(self):
         initialvideo=TutorialsVideo('https://www.youtube.com/embed/Qhrz0rZmnLU','The best tips to improve on forged alliance.')
@@ -24,14 +29,55 @@ class TutorialsWidget(FormClass, BaseClass):
 
         self.show_video(self.current_index_of_video_list)
 
+    def setup_initial_maps_tutorial(self):
+        self.map1_pushbutton_tutorials.setFlat(True)
+        self.map2_pushbutton_tutorials.setFlat(True)
+        self.map3_pushbutton_tutorials.setFlat(True)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list.append(map)
+        map2=MapTutorial('res/tutorials/map2.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list.append(map2)
+        map3=MapTutorial('res/tutorials/map3.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list.append(map3)
+        map4=MapTutorial('res/tutorials/map4.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list.append(map4)
+        map5=MapTutorial('res/tutorials/map5.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list.append(map5)
+        map6=MapTutorial('res/tutorials/map6.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list.append(map6)
+        self.set_stylesheet_for_maps(1)
+
+    def set_stylesheet_for_maps(self,index):
+        if 1 <= self.current_index_of_maps_tutorials_list <= len(self.maps_tutorial_list)-2:
+            logger.info('previous map zawa22>>' +str(self.current_index_of_maps_tutorials_list))
+            self.map1_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[index-1].link)+');');
+            self.map2_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[index].link)+');');
+            self.map3_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[index+1].link)+');');
+
+    def update_maps_images(self):
+        logger.info('update called >>>>' +str(self.current_index_of_maps_tutorials_list))
+        if 1 <= self.current_index_of_maps_tutorials_list <= len(self.maps_tutorial_list)-2:
+            logger.info('previous map zawa>>>>' +str(self.current_index_of_maps_tutorials_list))
+            self.set_stylesheet_for_maps(self.current_index_of_maps_tutorials_list)
+
+    def previous_map(self):
+        if  self.current_index_of_maps_tutorials_list > 1:
+            self.current_index_of_maps_tutorials_list-=1
+            self.update_maps_images()
+
+    def next_map(self):
+        logger.info('NEXT MAP CLICKED with the index '+str(self.current_index_of_maps_tutorials_list))
+        if self.current_index_of_maps_tutorials_list < len(self.maps_tutorial_list)-2:
+            logger.info('GG NEXT MAP CLICKED with the index '+str(self.current_index_of_maps_tutorials_list))
+            self.current_index_of_maps_tutorials_list+=1
+            self.update_maps_images()
+
     def show_video(self,index_of_video):
         if 0<=index_of_video<len(self.video_list):
             self.video_webengine_tutorials.setUrl(self.video_list[index_of_video].link)
             self.description_video_textBrowser_tutorials.setHtml('''<center>
             ''' + self.video_list[index_of_video].description + '''
             </center>''')
-        else:
-            pass
 
     def __init__(self, client, *args, **kwargs):
         BaseClass.__init__(self, *args, **kwargs)
@@ -39,9 +85,17 @@ class TutorialsWidget(FormClass, BaseClass):
         self.client = client
         util.THEME.setStyleSheet(self, "tutorials/formatters/style.css")
         self.setup_initial_videos()
+        self.setup_initial_maps_tutorial()
 
         self.nextvideo_pushbutton_tutorials.clicked.connect(self.next_video)
         self.previousvideo_pushbutton_tutorials.clicked.connect(self.previous_video)
+
+
+        self.previousmap_pushbutton_tutorials.clicked.connect(self.previous_map)
+        self.nextmap_pushbutton_tutorials.clicked.connect(self.next_map)
+        self.map1_pushbutton_tutorials.clicked.connect(lambda: self.start_tutorial(-1))
+        self.map2_pushbutton_tutorials.clicked.connect(lambda: self.start_tutorial(0))
+        self.map3_pushbutton_tutorials.clicked.connect(lambda: self.start_tutorial(1))
 
     def next_video(self):
         if self.current_index_of_video_list < len(self.video_list) - 1 :
@@ -57,6 +111,12 @@ class TutorialsWidget(FormClass, BaseClass):
 
         else:
             pass
+
+
+    def start_tutorial(self,button_number):
+
+
+        pass
 
     def backup(self):
 
