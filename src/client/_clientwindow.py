@@ -1326,7 +1326,7 @@ class ClientWindow(FormClass, BaseClass):
 
         fa.run(info, self.game_session.relay_port, arguments)
 
-    def start_tutorial_map_zawa(self, map_name):
+    def start_tutorial_map(self, map_name):
         info = dict(uid='', recorder=self.login, featured_mod='', launched_at=time.time()) # it was message['uid']  et message['mod'] in the copied & pasta
         fa.run(info, '', ['/init init_tutorials.lua /map '+map_name]) # lulz le '' : self.game_session.relay_port
 

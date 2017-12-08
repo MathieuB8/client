@@ -115,7 +115,7 @@ class TutorialsWidget(FormClass, BaseClass):
 
     def start_tutorial(self,button_number):
         real_index_of_video = self.current_index_of_maps_tutorials_list + button_number
-        self.client.start_tutorial_map_zawa(self.maps_tutorial_list[real_index_of_video].map_name)
+        self.client.start_tutorial_map(self.maps_tutorial_list[real_index_of_video].map_name)
 
     def backup(self):
 

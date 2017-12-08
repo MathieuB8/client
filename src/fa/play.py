@@ -17,15 +17,12 @@ def build_argument_list(game_info, port, arguments=None):
     import client
     arguments = arguments or []
 
+    # Init file
     if not '/init init_tutorials.lua' in arguments:
         if '/init' in arguments:
             raise ValueError("Custom init scripts no longer supported.")
         arguments.append('/init')
         arguments.append('init_{}.lua'.format(game_info.get('featured_mod', 'faf')))
-
-    # Init file
-
-    #ZAWA TO DELETE arguments.append('/map FAF_TUT_SummerDuel_BO')
 
     arguments.append('/numgames {}'.format(client.instance.me.player.number_of_games))
 
