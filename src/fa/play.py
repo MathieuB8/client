@@ -24,6 +24,8 @@ def build_argument_list(game_info, port, arguments=None):
     arguments.append('/init')
     arguments.append('init_{}.lua'.format(game_info.get('featured_mod', 'faf')))
 
+    #ZAWA TO DELETE arguments.append('/map FAF_TUT_SummerDuel_BO')
+
     arguments.append('/numgames {}'.format(client.instance.me.player.number_of_games))
 
     # log file

@@ -4,6 +4,7 @@ from fa.replay import replay
 import util
 import os
 import fa
+from tutorials.tutorialsytvideo import TutorialsVideo
 
 import logging
 logger = logging.getLogger(__name__)
@@ -11,26 +12,61 @@ FormClass, BaseClass = util.THEME.loadUiType("tutorials/tutorials.ui")
 
 
 class TutorialsWidget(FormClass, BaseClass):
+
+    video_list = []
+    current_index_of_video_list = 0
+
+    def setup_initial_videos(self):
+        initialvideo=TutorialsVideo('https://www.youtube.com/embed/Qhrz0rZmnLU','The best tips to improve on forged alliance.')
+        self.video_list.append(initialvideo)
+        video2=TutorialsVideo('https://www.youtube.com/embed/tqCs0WVGT_I','Guide on how to use the client.')
+        self.video_list.append(video2)
+
+        self.show_video(self.current_index_of_video_list)
+
+    def show_video(self,index_of_video):
+        if 0<=index_of_video<len(self.video_list):
+            self.video_webengine_tutorials.setUrl(self.video_list[index_of_video].link)
+            self.description_video_textBrowser_tutorials.setHtml('''<center>
+            ''' + self.video_list[index_of_video].description + '''
+            </center>''')
+        else:
+            pass
+
     def __init__(self, client, *args, **kwargs):
         BaseClass.__init__(self, *args, **kwargs)
         self.setupUi(self)
         self.client = client
         util.THEME.setStyleSheet(self, "tutorials/formatters/style.css")
-        #util.THEME.setStyleSheet(self, "tournaments/formatters/style.css")
+        self.setup_initial_videos()
 
-        self.label_image_video1.setPixmap(QtGui.QPixmap('res/tutorials/TopTipsFAF.png'))
-        self.label_text_video1.insertHtml('''<center>
-        The best tips to improve on forged alliance.<br>
-        <a href='https://www.youtube.com/watch?v=Qhrz0rZmnLU'><span style="color:#009933;">Link to video</span></a>
-        </center>''')
+        self.nextvideo_pushbutton_tutorials.clicked.connect(self.next_video)
+        self.previousvideo_pushbutton_tutorials.clicked.connect(self.previous_video)
+
+    def next_video(self):
+        if self.current_index_of_video_list < len(self.video_list) - 1 :
+            self.current_index_of_video_list+=1
+            self.show_video(self.current_index_of_video_list)
+        else:
+            pass
+
+    def previous_video(self):
+        if self.current_index_of_video_list > 0 :
+            self.current_index_of_video_list-=1
+            self.show_video(self.current_index_of_video_list)
+
+        else:
+            pass
+
+    def backup(self):
 
         self.label_image_video2.setPixmap(QtGui.QPixmap('res/tutorials/ClientPresentation.png'))
-        self.label_text_video2.insertHtml('''<center>
+        self.label_text_video2.setHtml('''<center>
         Guide on how to use the client.<br>
         <a href='https://www.youtube.com/watch?v=tqCs0WVGT_I'><span style="color:#009933;">Link to video</span></a>
         </center>''')
 
-        self.tutorial_main_text_browser.insertHtml('''<center>
+        self.tutorial_main_text_browser.setHtml('''<center>
         Welcome to forged alliance forever ! If you want ever more information about this game you can check these tutorials in order to improve :<br>
         <a href='https://wiki.faforever.com/index.php?title=Main_Page'><span style="color:#009933;">Link to wiki</span></a><br>
         <br>
@@ -46,11 +82,11 @@ class TutorialsWidget(FormClass, BaseClass):
         <span style="color:#009933;">(todo, not working)Call for a personal trainer</span>
         </center>''')
 
-        self.tutorial_tutorialsmaps_text_browser.insertHtml('''<center>
+        self.tutorial_tutorialsmaps_text_browser.setHtml('''<center>
         (todo)Here you will find some scenario which come from speed2 idea
         </center>''')
 
-        self.tutorial_achievements_text_browser.insertHtml('''<center>
+        self.tutorial_achievements_text_browser.setHtml('''<center>
         (todo)Achievements :<br>
         [] : Play 10 different maps on custom games<br>
         [] : Get trained by a trainer<br>

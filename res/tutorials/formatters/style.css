@@ -3,7 +3,6 @@ QWidget
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     background-color: rgb(50,50,50);
-    border: none;
 }
 
 QLabel
@@ -11,21 +10,113 @@ QLabel
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     background-color: rgb(50,50,50);
-    border: none;
 
 }
 
-QGridLayout
+QWidget#Main_tutorial_tab
 {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     background-color: rgb(50,50,50);
-    border: none;
+    border: 3px solid black;
 }
+
+ QFrame#BlackFrame
+ {
+     border: 2px solid black;
+ }
+
 QTextBrowser
 {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 15px;
     background-color: rgb(50,50,50);
-    border: none;
+}
+
+QTabWidget#bottomTabs::pane
+{
+     /* The tab widget frame */
+     background-color: #2f2f2f;
+     border: none;
+ }
+
+
+ /* before there was border : none for all the above ones*/
+
+ QTabWidget#bottomTabs::tab-bar
+{
+    top: 0px;
+    left: 25px; /* move to the right by 25px */
+ }
+
+
+
+/* Style the tab using the tab sub-control. Note that it reads QTabBar _not_ QTabWidget */
+QTabWidget#bottomTabs > QTabBar::tab
+{
+    background-color:#383838;
+    color: silver;
+    height: 22px;
+    min-width: 160px;
+    padding:4px;
+}
+
+
+QTabWidget#bottomTabs > QTabBar::tab:!selected
+{
+    margin-top:5px;
+    background-color: #414b55;
+
+}
+
+
+QTabWidget#bottomTabs > QTabBar::tab:hover
+{
+    color:white;
+    background-color: #606060;
+
+}
+
+
+QTabWidget#bottomTabs > QTabBar::tab:selected
+{
+    color:white;
+    background-color: #758fa0;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+
+}
+
+
+
+
+QProgressBar {
+    border: 3px solid grey;
+    border-radius: 5px;
+}
+
+QProgressBar::chunk {
+    background-color: #05B8CC;
+    width: 20px;
+}
+
+QPushButton {
+    border: 2px solid #8f8f91;
+    border-radius: 6px;
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #f6f7fa, stop: 1 #dadbde);
+    min-width: 80px;
+}
+
+QPushButton:pressed {
+    background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                      stop: 0 #dadbde, stop: 1 #f6f7fa);
+}
+
+QPushButton:flat {
+    border: none; /* no border for a flat push button */
+}
+
+QPushButton:default {
+    border-color: navy; /* make the default button prominent */
 }
