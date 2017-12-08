@@ -352,7 +352,7 @@ p, li { white-space: pre-wrap; }
    <item row="1" column="0">
     <widget class="QTabWidget" name="bottomTabs">
      <property name="currentIndex">
-      <number>0</number>
+      <number>2</number>
      </property>
      <widget class="QWidget" name="Main_tutorial_tab">
       <property name="sizePolicy">
@@ -556,10 +556,35 @@ p, li { white-space: pre-wrap; }
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tab">
+     <widget class="QWidget" name="tutorials_maps_tab">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <attribute name="title">
        <string>Knowledge Base</string>
       </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QTextBrowser" name="knowledge_base_texbrowser_tutorials">
+           <property name="minimumSize">
+            <size>
+             <width>0</width>
+             <height>230</height>
+            </size>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
      </widget>
     </widget>
    </item>

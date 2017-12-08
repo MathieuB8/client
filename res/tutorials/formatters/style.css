@@ -21,7 +21,9 @@ QWidget#Main_tutorial_tab
     border: 3px solid black;
 }
 
-
+QFrame#BlackFrame{
+    border: 3px solid black;
+}
  QPushButton
  {
      border: none;

@@ -97,6 +97,22 @@ class TutorialsWidget(FormClass, BaseClass):
         self.map2_pushbutton_tutorials.clicked.connect(lambda: self.start_tutorial(0))
         self.map3_pushbutton_tutorials.clicked.connect(lambda: self.start_tutorial(1))
 
+        self.knowledge_base_texbrowser_tutorials.setHtml('''<center>
+        You can find basic information about the game on the wiki :
+        <a href='https://wiki.faforever.com/index.php?title=Main_Page'><span style="color:#009933;">Link to wiki</span></a><br>
+        <br>
+        -You can also watch streams of better players to get an idea of the way to play :
+        <a href="https://www.twitch.tv/directory/game/Supreme%20Commander%3A%20Forged%20Alliance"><span style="color:#009933;">Link to twitch website</span></a><br>
+        <br>
+        -You can also watch these youtube video which will help you improve :
+        <a href="https://www.youtube.com/channel/UCJYYaFbqPqbNkvgJAqrhC2A/videos"><span style="color:#009933;">Link to Heaven youtube videos</span></a><br>
+        <br>
+        -Some trainers are also available to help you improve on the game, so don't hesitate to contact them at all !<br>
+        You can ask for one in #aeolus or  in #newbie channel or find a name to contact on this topic :<br>
+        <a href ="http://forums.faforever.com/viewtopic.php?f=2&t=1614"><span style="color:#009933;">Your Personal Trainer Team</span></a><br>
+        <span style="color:#009933;">(todo, not working)Call for a personal trainer</span>
+        </center>''')
+
     def next_video(self):
         if self.current_index_of_video_list < len(self.video_list) - 1 :
             self.current_index_of_video_list+=1
