@@ -7,6 +7,7 @@ import fa
 from PyQt5.QtGui import QIcon, QPixmap
 from tutorials.tutorialsytvideo import TutorialsVideo
 from tutorials.maptutorial import MapTutorial
+from achievement.achievements import Achievements
 
 
 import logging
@@ -131,6 +132,7 @@ class TutorialsWidget(FormClass, BaseClass):
 
     def start_tutorial(self,button_number):
         real_index_of_video = self.current_index_of_maps_tutorials_list + button_number
+        Achievements.adding_value_without_erasing_string(Achievements,'tutorial_scenario_played', self.maps_tutorial_list[real_index_of_video].map_name)
         self.client.start_tutorial_map(self.maps_tutorial_list[real_index_of_video].map_name)
 
     def backup(self):
