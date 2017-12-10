@@ -34,6 +34,7 @@ from ui.busy_widget import BusyWidget
 
 from client.playercolors import PlayerColors
 from client.gameannouncer import GameAnnouncer
+from achievement.achievements import Achievements
 '''
 Created on Dec 1, 2011
 
@@ -196,6 +197,9 @@ class ClientWindow(FormClass, BaseClass):
         fa.instance.finished.connect(self.finishedFA)
         fa.instance.error.connect(self.errorFA)
         self.gameset.newGame.connect(fa.instance.newServerGame)
+
+        # Achievements
+        self.achievements = Achievements()
 
         # Local Replay Server
         self.replayServer = fa.replayserver.ReplayServer(self)
