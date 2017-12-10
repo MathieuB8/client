@@ -6,8 +6,11 @@ from PyQt5.QtWidgets import QMessageBox
 
 class Achievements():
 
-    def reset_all_achievements(self):
-        self.update_value('number_games_played', 0)
+    def remove_all_none_achievements(self):
+        if self.get_value('number_games_played') is None:
+            self.update_value('number_games_played', 0)
+        if self.get_value('tutorial_scenario_played') is None:
+            self.update_value('tutorial_scenario_played', '')
 
     def show_value_all_achievements(self):
         logger.info ('Achievements 10 games>>'+str(self.get_value('number_games_played')))
@@ -17,9 +20,10 @@ class Achievements():
 
 
     def __init__(self, *args, **kwargs):
-        Settings.persisted_property('achievement/number_games_played', type=int, default_value=0)
-        Settings.persisted_property('achievement/tutorial_scenario_played', type=str, default_value='')
+        Settings.persisted_property('achievement/number_games_played', type=int, default_value='')
+        Settings.persisted_property('achievement/tutorial_scenario_played', type=str, default_value = '')
 
+        self.remove_all_none_achievements()
 
 
         self.show_value_all_achievements()
@@ -28,9 +32,11 @@ class Achievements():
     def update_value(self, name, value):
         util.settings.setValue('achievement/' + name, value)
 
-    def adding_value_without_erasing_string(self, name, value):
-        new_value = self.get_value(name) + ";" + str(value)
-        self.update_value(name, new_value)
+    def update_scenario_maps(self, name, newvalue):
+        current_value_achievement = self.get_value(name)
+        if newvalue not in current_value_achievement:
+            newvalue = current_value_achievement + ";" + str(newvalue)
+            self.update_value(name, newvalue)
 
 
     def get_value(self, name):
