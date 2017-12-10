@@ -18,9 +18,10 @@ FormClass, BaseClass = util.THEME.loadUiType("tutorials/tutorials.ui")
 class TutorialsWidget(FormClass, BaseClass):
 
     video_list = []
-    maps_tutorial_list =[]
+    maps_tutorial_list = [ [], [], [], [] ]
+    current_categorie = 0
     current_index_of_video_list = 0
-    current_index_of_maps_tutorials_list = 1
+    current_index_of_maps_tutorials_list = [1,1,1,1]
 
     def setup_initial_videos(self):
         initialvideo=TutorialsVideo('https://www.youtube.com/embed/Qhrz0rZmnLU','The best tips to improve on forged alliance.')
@@ -34,43 +35,83 @@ class TutorialsWidget(FormClass, BaseClass):
         self.map1_pushbutton_tutorials.setFlat(True)
         self.map2_pushbutton_tutorials.setFlat(True)
         self.map3_pushbutton_tutorials.setFlat(True)
+
         map=MapTutorial('res/tutorials/map1.png','FAF_TUT_Theta_BO')
-        self.maps_tutorial_list.append(map)
-        map2=MapTutorial('res/tutorials/map2.png','FAF_TUT_FourLeaf_BO')
-        self.maps_tutorial_list.append(map2)
-        map3=MapTutorial('res/tutorials/map3.png','FAF_TUT_Loki_BO')
-        self.maps_tutorial_list.append(map3)
-        map4=MapTutorial('res/tutorials/map4.png','FAF_TUT_SummerDuel_BO')
-        self.maps_tutorial_list.append(map4)
-        map5=MapTutorial('res/tutorials/map5.png','FAF_TUT_Loki_BO')
-        self.maps_tutorial_list.append(map5)
-        map6=MapTutorial('res/tutorials/map6.png','FAF_TUT_Theta_BO')
-        self.maps_tutorial_list.append(map6)
+        self.maps_tutorial_list[0].append(map)
+        map=MapTutorial('res/tutorials/map2.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[0].append(map)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[0].append(map)
+        map=MapTutorial('res/tutorials/map2.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list[0].append(map)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_Theta_BO')
+        self.maps_tutorial_list[0].append(map)
+
+        map=MapTutorial('res/tutorials/map3.png','FAF_TUT_SummerDuel_BO')
+        self.maps_tutorial_list[1].append(map)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_SummerDuel_BO')
+        self.maps_tutorial_list[1].append(map)
+        map=MapTutorial('res/tutorials/map3.png','FAF_TUT_SummerDuel_BO')
+        self.maps_tutorial_list[1].append(map)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_SummerDuel_BO')
+        self.maps_tutorial_list[1].append(map)
+        map=MapTutorial('res/tutorials/map3.png','FAF_TUT_SummerDuel_BO')
+        self.maps_tutorial_list[1].append(map)
+
+        map=MapTutorial('res/tutorials/map5.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[2].append(map)
+        map=MapTutorial('res/tutorials/map3.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[2].append(map)
+        map=MapTutorial('res/tutorials/map5.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[2].append(map)
+        map=MapTutorial('res/tutorials/map3.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[2].append(map)
+        map=MapTutorial('res/tutorials/map5.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[2].append(map)
+        map=MapTutorial('res/tutorials/map3.png','FAF_TUT_Loki_BO')
+        self.maps_tutorial_list[2].append(map)
+
+
+        map=MapTutorial('res/tutorials/map6.png','FAF_TUT_FourLeaf_BO')
+        self.maps_tutorial_list[3].append(map)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_FourLeaf_BO')
+        self.maps_tutorial_list[3].append(map)
+        map=MapTutorial('res/tutorials/map6.png','FAF_TUT_FourLeaf_BO')
+        self.maps_tutorial_list[3].append(map)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_FourLeaf_BO')
+        self.maps_tutorial_list[3].append(map)
+        map=MapTutorial('res/tutorials/map6.png','FAF_TUT_FourLeaf_BO')
+        self.maps_tutorial_list[3].append(map)
+        map=MapTutorial('res/tutorials/map1.png','FAF_TUT_FourLeaf_BO')
+        self.maps_tutorial_list[3].append(map)
+
+
+
         self.set_stylesheet_for_maps(1)
 
-    def set_stylesheet_for_maps(self,index):
-        if 1 <= self.current_index_of_maps_tutorials_list <= len(self.maps_tutorial_list)-2:
-            logger.info('previous map zawa22>>' +str(self.current_index_of_maps_tutorials_list))
-            self.map1_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[index-1].link)+');');
-            self.map2_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[index].link)+');');
-            self.map3_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[index+1].link)+');');
+    def set_stylesheet_for_maps(self, index):
+        if 1 <= self.current_index_of_maps_tutorials_list[self.current_categorie] <= len(self.maps_tutorial_list[self.current_categorie])-2:
+            logger.info('previous map zawa22>>' +str(self.current_index_of_maps_tutorials_list[self.current_categorie]))
+            self.map1_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[self.current_categorie][index-1].link)+');');
+            self.map2_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[self.current_categorie][index].link)+');');
+            self.map3_pushbutton_tutorials.setStyleSheet('border-image: url('+str(self.maps_tutorial_list[self.current_categorie][index+1].link)+');');
 
     def update_maps_images(self):
-        logger.info('update called >>>>' +str(self.current_index_of_maps_tutorials_list))
-        if 1 <= self.current_index_of_maps_tutorials_list <= len(self.maps_tutorial_list)-2:
-            logger.info('previous map zawa>>>>' +str(self.current_index_of_maps_tutorials_list))
-            self.set_stylesheet_for_maps(self.current_index_of_maps_tutorials_list)
+        logger.info('update called >>>>' +str(self.current_index_of_maps_tutorials_list[self.current_categorie]))
+        if 1 <= self.current_index_of_maps_tutorials_list[self.current_categorie] <= len(self.maps_tutorial_list[self.current_categorie]) - 2:
+            logger.info('previous map zawa>>>>' +str(self.current_index_of_maps_tutorials_list[self.current_categorie]))
+            self.set_stylesheet_for_maps(self.current_index_of_maps_tutorials_list[self.current_categorie])
 
     def previous_map(self):
-        if  self.current_index_of_maps_tutorials_list > 1:
-            self.current_index_of_maps_tutorials_list-=1
+        if  self.current_index_of_maps_tutorials_list[self.current_categorie] > 1:
+            self.current_index_of_maps_tutorials_list[self.current_categorie] -= 1
             self.update_maps_images()
 
     def next_map(self):
-        logger.info('NEXT MAP CLICKED with the index '+str(self.current_index_of_maps_tutorials_list))
-        if self.current_index_of_maps_tutorials_list < len(self.maps_tutorial_list)-2:
-            logger.info('GG NEXT MAP CLICKED with the index '+str(self.current_index_of_maps_tutorials_list))
-            self.current_index_of_maps_tutorials_list+=1
+        logger.info('NEXT MAP CLICKED with the index '+str(self.current_index_of_maps_tutorials_list[self.current_categorie]))
+        if self.current_index_of_maps_tutorials_list[self.current_categorie] < len(self.maps_tutorial_list[self.current_categorie])-2:
+            logger.info('GG NEXT MAP CLICKED with the index '+str(self.current_index_of_maps_tutorials_list[self.current_categorie]))
+            self.current_index_of_maps_tutorials_list[self.current_categorie]+=1
             self.update_maps_images()
 
     def show_video(self,index_of_video):
@@ -79,6 +120,10 @@ class TutorialsWidget(FormClass, BaseClass):
             self.description_video_textBrowser_tutorials.setHtml('''<center>
             ''' + self.video_list[index_of_video].description + '''
             </center>''')
+
+    def update_current_categorie(self, categorie_number):
+        self.current_categorie = categorie_number
+        self.update_maps_images()
 
     def __init__(self, client, *args, **kwargs):
         BaseClass.__init__(self, *args, **kwargs)
@@ -98,6 +143,12 @@ class TutorialsWidget(FormClass, BaseClass):
         self.map2_pushbutton_tutorials.clicked.connect(lambda: self.start_tutorial(0))
         self.map3_pushbutton_tutorials.clicked.connect(lambda: self.start_tutorial(1))
 
+
+        self.categorie0_pushbutton_interactive_tutorials.toggled.connect(lambda: self.update_current_categorie(0))
+        self.categorie1_pushbutton_interactive_tutorials.toggled.connect(lambda: self.update_current_categorie(1))
+        self.categorie2_pushbutton_interactive_tutorials.toggled.connect(lambda: self.update_current_categorie(2))
+        self.categorie3_pushbutton_interactive_tutorials.toggled.connect(lambda: self.update_current_categorie(3))
+
         self.knowledge_base_texbrowser_tutorials.setHtml('''<center>
         You can find basic information about the game on the wiki :
         <a href='https://wiki.faforever.com/index.php?title=Main_Page'><span style="color:#009933;">Link to wiki</span></a><br>
@@ -115,20 +166,50 @@ class TutorialsWidget(FormClass, BaseClass):
         </center>''')
 
         #Achievements
-        self.achievement1_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/default_achievement.png'))
-        self.achievement1_text_label_tutorials.setText('Play 10 games')
+        self.achievement1_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/icons/achievement_bronze.png'))
+        self.achievement2_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/icons/achievement_bronze.png'))
+        self.achievement3_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/icons/achievement_bronze.png'))
+        self.achievement4_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/icons/achievement_bronze.png'))
+        self.achievement5_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/icons/achievement_bronze.png'))
+        self.achievement6_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/icons/achievement_bronze.png'))
+
         self.achievement1_progressBar_tutorials.setMinimum(0)
+        self.achievement2_progressBar_tutorials.setMinimum(0)
+        self.achievement3_progressBar_tutorials.setMinimum(0)
+        self.achievement4_progressBar_tutorials.setMinimum(0)
+        self.achievement5_progressBar_tutorials.setMinimum(0)
+        self.achievement6_progressBar_tutorials.setMinimum(0)
+
+        self.achievement1_text_label_tutorials.setText('Play 10 games')
         self.achievement1_progressBar_tutorials.setMaximum(10)
         self.achievement1_progressBar_tutorials.setValue(int(self.client.achievements.get_value('number_games_played')))
 
-
-        self.achievement2_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/default_achievement2.png'))
-        self.achievement2_text_label_tutorials.setText('Play 2 different tutorial maps')
-        self.achievement1_progressBar_tutorials.setMinimum(0)
-        self.achievement2_progressBar_tutorials.setMaximum(2)
+        self.achievement2_text_label_tutorials.setText('Play 3 different tutorial maps')
+        self.achievement2_progressBar_tutorials.setMaximum(3)
         number_scenario_played = len((self.client.achievements.get_value('tutorial_scenario_played')).split(';'))
         if number_scenario_played > 2 : number_scenario_played = 2
         self.achievement2_progressBar_tutorials.setValue(number_scenario_played)
+
+        self.achievement3_text_label_tutorials.setText('Play on 10 different maps')
+        self.achievement3_progressBar_tutorials.setMaximum(10)
+        self.achievement3_progressBar_tutorials.setValue(8) #TODO
+
+        self.achievement4_text_label_tutorials.setText('Play 2 challenge maps')
+        self.achievement4_progressBar_tutorials.setMaximum(2)
+        self.achievement4_progressBar_tutorials.setValue(1) #TODO
+
+        self.achievement5_text_label_tutorials.setText('Play 5 ladder games')
+        self.achievement5_progressBar_tutorials.setMaximum(5)
+        self.achievement5_progressBar_tutorials.setValue(4) #TODO
+
+        self.achievement6_text_label_tutorials.setText('Win 3 custom games')
+        self.achievement6_progressBar_tutorials.setMaximum(3)
+        self.achievement6_progressBar_tutorials.setValue(0) #TODO
+
+
+
+
+
 
     def next_video(self):
         if self.current_index_of_video_list < len(self.video_list) - 1 :
@@ -147,9 +228,9 @@ class TutorialsWidget(FormClass, BaseClass):
 
 
     def start_tutorial(self,button_number):
-        real_index_of_video = self.current_index_of_maps_tutorials_list + button_number
-        self.client.achievements.update_scenario_maps('tutorial_scenario_played', self.maps_tutorial_list[real_index_of_video].map_name)
-        self.client.start_tutorial_map(self.maps_tutorial_list[real_index_of_video].map_name)
+        real_index_of_video = self.current_index_of_maps_tutorials_list[self.current_categorie] + button_number
+        self.client.achievements.update_scenario_maps('tutorial_scenario_played', self.maps_tutorial_list[self.current_categorie][real_index_of_video].map_name)
+        self.client.start_tutorial_map(self.maps_tutorial_list[self.current_categorie][real_index_of_video].map_name)
 
     def backup(self):
 

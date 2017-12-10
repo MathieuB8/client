@@ -24,6 +24,10 @@ QWidget#Main_tutorial_tab
 QFrame#BlackFrame{
     border: 3px solid black;
 }
+
+QFrame#BlackFrame2{
+    border: 3px solid black;
+}
  QPushButton
  {
      border: none;
@@ -72,7 +76,9 @@ QTabWidget#bottomTabs > QTabBar::tab:!selected
     background-color: #414b55;
 
 }
-
+QRadioButton{
+    color:white;
+}
 
 QTabWidget#bottomTabs > QTabBar::tab:hover
 {

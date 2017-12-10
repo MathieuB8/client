@@ -198,9 +198,6 @@ class ClientWindow(FormClass, BaseClass):
         fa.instance.error.connect(self.errorFA)
         self.gameset.newGame.connect(fa.instance.newServerGame)
 
-        # Achievements
-        self.achievements = Achievements()
-
         # Local Replay Server
         self.replayServer = fa.replayserver.ReplayServer(self)
 
@@ -327,7 +324,10 @@ class ClientWindow(FormClass, BaseClass):
         #self.WPApi.newsDone.connect(self.on_wpapi_done)
         #self.WPApi.download()
 
-        #self.controlsContainerLayout.setAlignment(self.pageControlFrame, QtCore.Qt.AlignRight)
+        #self.controlsContainerLayout.setAlignment(self.pageControlFrame, QtCore.Qt.AlignRight
+
+        # Achievements
+        self.achievements = Achievements()
 
     @property
     def state(self):

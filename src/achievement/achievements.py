@@ -26,7 +26,7 @@ class Achievements():
         self.remove_all_none_achievements()
 
 
-        self.show_value_all_achievements()
+        # debug : self.show_value_all_achievements()
         logger.info('Achievement initialised')
 
     def update_value(self, name, value):
