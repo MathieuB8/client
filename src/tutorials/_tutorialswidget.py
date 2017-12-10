@@ -114,6 +114,22 @@ class TutorialsWidget(FormClass, BaseClass):
         <span style="color:#009933;">(todo, not working)Call for a personal trainer</span>
         </center>''')
 
+        #Achievements
+        self.achievement1_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/default_achievement.png'))
+        self.achievement1_text_label_tutorials.setText('Play 10 games')
+        self.achievement1_progressBar_tutorials.setMinimum(0)
+        self.achievement1_progressBar_tutorials.setMaximum(10)
+        self.achievement1_progressBar_tutorials.setValue(int(self.client.achievements.get_value('number_games_played')))
+
+
+        self.achievement2_image_label_tutorials.setPixmap(QtGui.QPixmap('res/tutorials/default_achievement2.png'))
+        self.achievement2_text_label_tutorials.setText('Play 2 different tutorial maps')
+        self.achievement1_progressBar_tutorials.setMinimum(0)
+        self.achievement2_progressBar_tutorials.setMaximum(2)
+        number_scenario_played = len((self.client.achievements.get_value('tutorial_scenario_played')).split(';'))
+        if number_scenario_played > 2 : number_scenario_played = 2
+        self.achievement2_progressBar_tutorials.setValue(number_scenario_played)
+
     def next_video(self):
         if self.current_index_of_video_list < len(self.video_list) - 1 :
             self.current_index_of_video_list+=1
