@@ -126,9 +126,14 @@ class ReplayRecorder(QtCore.QObject):
             self.replayInfo = fa.instance._info
 
         self.replayInfo['game_end'] = time.time()
-
         length_of_game=int(self.replayInfo['game_end'])-int(self.replayInfo['launched_at'])
-        self.parent.client.achievements.replay_info(length_of_game, self.replayInfo['featured_mod'], self.replayInfo['mapname'])
+        map_name_of_game = ''
+        if 'mapname' in self.replayInfo:
+            map_name_of_game = self.w['mapname']
+        else:
+            map_name_of_game = 'tutorialtab_map'
+        logger.info ("ZAWAAAA REMOVE ME>>>>>> "+str(map_name_of_game))
+        self.parent.client.achievements.update_all_maps_games_achievement(length_of_game, self.replayInfo['featured_mod'], map_name_of_game)
 
         filename = os.path.join(util.REPLAY_DIR, str(self.replayInfo['uid']) + "-" + self.replayInfo['recorder'] + ".fafreplay")
         self.__logger.info("Writing local replay as " + filename + ", containing " + str(self.replayData.size()) + " bytes of replay data.")

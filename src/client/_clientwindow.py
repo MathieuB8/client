@@ -327,7 +327,7 @@ class ClientWindow(FormClass, BaseClass):
         #self.controlsContainerLayout.setAlignment(self.pageControlFrame, QtCore.Qt.AlignRight
 
         # Achievements
-        self.achievements = Achievements()
+        self.achievements = Achievements(self)
 
     @property
     def state(self):
@@ -1335,7 +1335,7 @@ class ClientWindow(FormClass, BaseClass):
         fa.run(info, self.game_session.relay_port, arguments)
 
     def start_tutorial_map(self, map_name):
-        info = dict(uid='', recorder=self.login, featured_mod='', launched_at=time.time()) # it was message['uid']  and message['mod'] (to remove this comment)
+        info = dict(uid='', recorder=self.login, featured_mod='tutorial_tab', launched_at=time.time()) # it was message['uid']  and message['mod'] (to remove this comment)
         fa.run(info, '', ['/init init_tutorials.lua /map '+map_name]) # before there was a self.game_session.relay_port (to remove this comment)
 
     def fill_in_session_info(self, game):

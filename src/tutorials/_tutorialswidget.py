@@ -26,6 +26,13 @@ class TutorialsWidget(FormClass, BaseClass):
     current_index_of_video_list = 0
     current_index_of_maps_tutorials_list = [1, 1, 1, 1]
     current_index_of_maps_challenge_list = [1, 1, 1, 1]
+    achievement1_max_number = 10
+    achievement2_max_number = 3
+    achievement3_max_number = 10
+    achievement4_max_number = 2
+    achievement5_max_number = 5
+    achievement6_max_number = 1
+    total_achievements_steps = achievement1_max_number + achievement2_max_number + achievement3_max_number + achievement4_max_number + achievement5_max_number + achievement6_max_number
 
     def setup_initial_videos(self):
         initialvideo = TutorialsVideo(
@@ -316,40 +323,50 @@ class TutorialsWidget(FormClass, BaseClass):
         self.achievement4_progressBar_tutorials.setMinimum(0)
         self.achievement5_progressBar_tutorials.setMinimum(0)
         self.achievement6_progressBar_tutorials.setMinimum(0)
+        self.progressBar_tutorials.setMinimum(0)
 
-        self.achievement1_text_label_tutorials.setText('Play 10 games')
-        self.achievement1_progressBar_tutorials.setMaximum(10)
+        self.achievement1_text_label_tutorials.setText('Play {} games'.format(self.achievement1_max_number))
+        self.achievement1_progressBar_tutorials.setMaximum(self.achievement1_max_number)
         self.achievement1_progressBar_tutorials.setValue(
             int(self.client.achievements.get_value('number_games_played')))
 
         self.achievement2_text_label_tutorials.setText(
-            'Play 3 different tutorial maps')
-        self.achievement2_progressBar_tutorials.setMaximum(3)
-        number_scenario_played = len(
-            (self.client.achievements.get_value('tutorial_scenario_played')).split(';'))
-        if number_scenario_played > 2:
-            number_scenario_played = 2
+            'Play {} different tutorial maps'.format(self.achievement2_max_number))
+        self.achievement2_progressBar_tutorials.setMaximum(self.achievement2_max_number)
+        number_scenario_played = self.client.achievements.get_value('tutorial_scenario_maps_played').count(';')
+        if number_scenario_played > self.achievement2_max_number: # cant be higher than max value of achievement
+            number_scenario_played = self.achievement2_max_number
         self.achievement2_progressBar_tutorials.setValue(
             number_scenario_played)
 
         self.achievement3_text_label_tutorials.setText(
-            'Play on 10 different maps')
-        self.achievement3_progressBar_tutorials.setMaximum(10)
-        self.achievement3_progressBar_tutorials.setValue(8)  # TODO
-
-        self.achievement4_text_label_tutorials.setText('Play 2 challenge maps')
-        self.achievement4_progressBar_tutorials.setMaximum(2)
-        self.achievement4_progressBar_tutorials.setValue(1)  # TODO
-
-        self.achievement5_text_label_tutorials.setText('Play 5 ladder games')
-        self.achievement5_progressBar_tutorials.setMaximum(5)
-        self.achievement5_progressBar_tutorials.setValue(4)  # TODO
-
-        self.achievement6_text_label_tutorials.setText('Win 3 custom games')
-        self.achievement6_progressBar_tutorials.setMaximum(3)
-        self.achievement6_progressBar_tutorials.setValue(0)  # TODO
+            'Play on {} different maps'.format(self.achievement3_max_number))
+        self.achievement3_progressBar_tutorials.setMaximum(self.achievement3_max_number)
+        number_different_maps_played = self.client.achievements.get_value('maps_played').count(';')
+        if number_different_maps_played > self.achievement3_max_number:
+            number_different_maps_played = self.achievement3_max_number
+        self.achievement3_progressBar_tutorials.setValue(number_different_maps_played)
 
 
+
+        self.achievement4_text_label_tutorials.setText('Play {} challenge maps'.format(self.achievement4_max_number))
+        self.achievement4_progressBar_tutorials.setMaximum(self.achievement4_max_number)
+        number_challenge_played = self.client.achievements.get_value('maps_challenge_played').count(';')
+        if number_challenge_played > self.achievement4_max_number: # cant be higher than max value of achievement
+            number_challenge_played = self.achievement4_max_number
+        self.achievement4_progressBar_tutorials.setValue(number_challenge_played)
+
+        self.achievement5_text_label_tutorials.setText('Play {} ladder games'.format(self.achievement5_max_number))
+        self.achievement5_progressBar_tutorials.setMaximum(self.achievement5_max_number)
+        self.achievement5_progressBar_tutorials.setValue(int(self.client.achievements.get_value('number_ladder_games')))
+
+
+        self.achievement6_text_label_tutorials.setText('Called a trainer via knowledge base')
+        self.achievement6_progressBar_tutorials.setMaximum(self.achievement6_max_number)
+        self.achievement6_progressBar_tutorials.setValue(int(self.client.achievements.get_value('called_a_trainer')))
+
+        self.progressBar_tutorials.setMaximum(self.total_achievements_steps)
+        self.update_overall_progress_bar()
         logger.info("Tutorials instantiated.")
 
     def calling_for_personal_trainer(self):
@@ -361,8 +378,28 @@ class TutorialsWidget(FormClass, BaseClass):
         if '#newbie' in self.client.chat.channels:
             self.client.chat.channels['#newbie'].chatEdit.setText('Any personal trainer available ?') # need to be same message for the notification system for personal trainer
             self.client.chat.channels['#newbie'].sendLine('#newbie')
+            self.client.achievements.update_value('called_a_trainer',1)
+            self.update_progress_bar('called_a_trainer', 1)
 
+    def update_overall_progress_bar(self):
+        total_progress = self.achievement1_progressBar_tutorials.value() + self.achievement2_progressBar_tutorials.value() + self.achievement3_progressBar_tutorials.value() + self.achievement4_progressBar_tutorials.value() + self.achievement5_progressBar_tutorials.value() + self.achievement6_progressBar_tutorials.value()
+        self.progressBar_tutorials.setValue(int(total_progress))
 
+    def update_progress_bar(self, name, value):
+        if name=='':
+            self.achievement1_progressBar_tutorials.setValue(value)
+        elif name=='tutorial_scenario_maps_played':
+            self.achievement2_progressBar_tutorials.setValue(value)
+        elif name=='maps_played':
+            self.achievement3_progressBar_tutorials.setValue(value)
+        elif name=='maps_challenge_played':
+            self.achievement4_progressBar_tutorials.setValue(value)
+        elif name=='number_ladder_games':
+            self.achievement5_progressBar_tutorials.setValue(value)
+        elif name=='called_a_trainer':
+            self.achievement6_progressBar_tutorials.setValue(value)
+
+        self.update_overall_progress_bar()
 
     def next_video(self):
         if self.current_index_of_video_list < len(self.video_list) - 1:
@@ -375,24 +412,22 @@ class TutorialsWidget(FormClass, BaseClass):
         if self.current_index_of_video_list > 0:
             self.current_index_of_video_list -= 1
             self.show_video(self.current_index_of_video_list)
-
         else:
             pass
 
     def start_tutorial(self, button_number):
         real_index_of_video = self.current_index_of_maps_tutorials_list[
             self.current_categorie] + button_number
-        self.client.achievements.update_scenario_maps(
-            'tutorial_scenario_played', self.maps_tutorial_list[self.current_categorie][real_index_of_video].map_name)
+        self.client.achievements.update_list_maps(
+            'tutorial_scenario_maps_played', self.maps_tutorial_list[self.current_categorie][real_index_of_video].map_name)
         self.client.start_tutorial_map(
             self.maps_tutorial_list[self.current_categorie][real_index_of_video].map_name)
 
     def start_challenge(self, button_number):
         real_index_of_video = self.current_index_of_maps_challenge_list[
             self.current_challenge_categorie] + button_number
-        '''TODO :
-        self.client.achievements.update_scenario_maps(
-            'tutorial_scenario_played', self.maps_tutorial_list[self.current_challenge_categorie][real_index_of_video].map_name)'''
+        self.client.achievements.update_list_maps(
+            'maps_challenge_played', self.maps_challenge_list[self.current_challenge_categorie][real_index_of_video].map_name)
         self.client.start_tutorial_map(
             self.maps_challenge_list[self.current_challenge_categorie][real_index_of_video].map_name)
 

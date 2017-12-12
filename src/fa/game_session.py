@@ -167,8 +167,6 @@ class GameSession(QObject):
             elif args[0] == 'Lobby':
                 # TODO: Eagerly initialize the game by hosting/joining early
                 pass
-            elif args[0] == 'Launching':
-                self._client.achievements.update_value('number_games_played',1+int(self._client.achievements.get_value('number_games_played')))
         elif command == 'Rehost':
             self._rehost = True
         elif command == 'GameFull':
