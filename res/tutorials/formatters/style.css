@@ -28,6 +28,9 @@ QFrame#BlackFrame{
 QFrame#BlackFrame2{
     border: 3px solid black;
 }
+QFrame#BlackFrame3{
+    border: 3px solid black;
+}
  QPushButton
  {
      border: none;

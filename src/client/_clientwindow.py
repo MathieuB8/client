@@ -792,6 +792,7 @@ class ClientWindow(FormClass, BaseClass):
         self.game_announcer.announce_games = self.actionSetOpenGames.isChecked()
         self.joinsparts = self.actionSetJoinsParts.isChecked()
         self.useNewbiesChannel = self.actionSetNewbiesChannel.isChecked()
+        self.calledAsPersonalTrainer = self.actionSetCalledAsPersonalTrainer.isChecked()
         self.chatmaps = self.actionSetChatMaps.isChecked()
         self.game_announcer.announce_replays = self.actionSetLiveReplays.isChecked()
 
@@ -898,6 +899,7 @@ class ClientWindow(FormClass, BaseClass):
         util.settings.setValue("opengames", self.game_announcer.announce_games)
         util.settings.setValue("joinsparts", self.joinsparts)
         util.settings.setValue("newbiesChannel", self.useNewbiesChannel)
+        util.settings.setValue("calledAsTrainer", self.calledAsPersonalTrainer)
         util.settings.setValue("chatmaps", self.chatmaps)
         util.settings.setValue("coloredNicknames", self.player_colors.coloredNicknames)
         util.settings.setValue("friendsontop", self.friendsontop)
@@ -926,6 +928,7 @@ class ClientWindow(FormClass, BaseClass):
             self.player_colors.coloredNicknames = (util.settings.value("coloredNicknames", "false") == "true")
             self.friendsontop = (util.settings.value("friendsontop", "false") == "true")
             self.useNewbiesChannel = (util.settings.value("newbiesChannel","true") == "true")
+            self.calledAsPersonalTrainer = (util.settings.value("calledAsTrainer","true") == "true")
 
             util.settings.endGroup()
             self.actionColoredNicknames.setChecked(self.player_colors.coloredNicknames)
@@ -936,6 +939,7 @@ class ClientWindow(FormClass, BaseClass):
             self.actionSetJoinsParts.setChecked(self.joinsparts)
             self.actionSetChatMaps.setChecked(self.chatmaps)
             self.actionSetNewbiesChannel.setChecked(self.useNewbiesChannel)
+            self.actionSetCalledAsPersonalTrainer.setChecked(self.calledAsPersonalTrainer)
         except:
             pass
 

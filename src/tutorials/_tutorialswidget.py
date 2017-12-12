@@ -20,9 +20,12 @@ class TutorialsWidget(FormClass, BaseClass):
 
     video_list = []
     maps_tutorial_list = [[], [], [], []]
+    maps_challenge_list = [[], [], [], []]
     current_categorie = 0
+    current_challenge_categorie = 0
     current_index_of_video_list = 0
     current_index_of_maps_tutorials_list = [1, 1, 1, 1]
+    current_index_of_maps_challenge_list = [1, 1, 1, 1]
 
     def setup_initial_videos(self):
         initialvideo = TutorialsVideo(
@@ -89,6 +92,61 @@ class TutorialsWidget(FormClass, BaseClass):
 
         self.set_stylesheet_for_maps(1)
 
+    def setup_initial_challenge_map(self):
+        self.map1_challenge_pushbutton_tutorials.setFlat(True)
+        self.map2_challenge_pushbutton_tutorials.setFlat(True)
+        self.map3_challenge_pushbutton_tutorials.setFlat(True)
+
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_Theta_BO')
+        self.maps_challenge_list[0].append(map)
+        map = MapTutorial('res/tutorials/map2.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[0].append(map)
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[0].append(map)
+        map = MapTutorial('res/tutorials/map2.png', 'FAF_TUT_Theta_BO')
+        self.maps_challenge_list[0].append(map)
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_Theta_BO')
+        self.maps_challenge_list[0].append(map)
+
+        map = MapTutorial('res/tutorials/map3.png', 'FAF_TUT_SummerDuel_BO')
+        self.maps_challenge_list[1].append(map)
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_SummerDuel_BO')
+        self.maps_challenge_list[1].append(map)
+        map = MapTutorial('res/tutorials/map3.png', 'FAF_TUT_SummerDuel_BO')
+        self.maps_challenge_list[1].append(map)
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_SummerDuel_BO')
+        self.maps_challenge_list[1].append(map)
+        map = MapTutorial('res/tutorials/map3.png', 'FAF_TUT_SummerDuel_BO')
+        self.maps_challenge_list[1].append(map)
+
+        map = MapTutorial('res/tutorials/map5.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[2].append(map)
+        map = MapTutorial('res/tutorials/map3.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[2].append(map)
+        map = MapTutorial('res/tutorials/map5.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[2].append(map)
+        map = MapTutorial('res/tutorials/map3.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[2].append(map)
+        map = MapTutorial('res/tutorials/map5.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[2].append(map)
+        map = MapTutorial('res/tutorials/map3.png', 'FAF_TUT_Loki_BO')
+        self.maps_challenge_list[2].append(map)
+
+        map = MapTutorial('res/tutorials/map6.png', 'FAF_TUT_FourLeaf_BO')
+        self.maps_challenge_list[3].append(map)
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_FourLeaf_BO')
+        self.maps_challenge_list[3].append(map)
+        map = MapTutorial('res/tutorials/map6.png', 'FAF_TUT_FourLeaf_BO')
+        self.maps_challenge_list[3].append(map)
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_FourLeaf_BO')
+        self.maps_challenge_list[3].append(map)
+        map = MapTutorial('res/tutorials/map6.png', 'FAF_TUT_FourLeaf_BO')
+        self.maps_challenge_list[3].append(map)
+        map = MapTutorial('res/tutorials/map1.png', 'FAF_TUT_FourLeaf_BO')
+        self.maps_challenge_list[3].append(map)
+
+        self.set_stylesheet_for_challenge(1)
+
     def set_stylesheet_for_maps(self, index):
         if 1 <= self.current_index_of_maps_tutorials_list[self.current_categorie] <= len(self.maps_tutorial_list[self.current_categorie]) - 2:
             logger.info('previous map zawa22>>' +
@@ -100,7 +158,18 @@ class TutorialsWidget(FormClass, BaseClass):
             self.map3_pushbutton_tutorials.setStyleSheet(
                 'border-image: url(' + str(self.maps_tutorial_list[self.current_categorie][index + 1].link) + ');')
 
-    def update_maps_images(self):
+    def set_stylesheet_for_challenge(self, index):
+        if 1 <= self.current_index_of_maps_challenge_list[self.current_challenge_categorie] <= len(self.maps_challenge_list[self.current_challenge_categorie]) - 2:
+            logger.info('previous map zawa22>>' +
+                        str(self.current_index_of_maps_challenge_list[self.current_challenge_categorie]))
+            self.map1_challenge_pushbutton_tutorials.setStyleSheet(
+                'border-image: url(' + str(self.maps_challenge_list[self.current_challenge_categorie][index - 1].link) + ');')
+            self.map2_challenge_pushbutton_tutorials.setStyleSheet(
+                'border-image: url(' + str(self.maps_challenge_list[self.current_challenge_categorie][index].link) + ');')
+            self.map3_challenge_pushbutton_tutorials.setStyleSheet(
+                'border-image: url(' + str(self.maps_challenge_list[self.current_challenge_categorie][index + 1].link) + ');')
+
+    def update_interactive_images(self):
         logger.info('update called >>>>' +
                     str(self.current_index_of_maps_tutorials_list[self.current_categorie]))
         if 1 <= self.current_index_of_maps_tutorials_list[self.current_categorie] <= len(self.maps_tutorial_list[self.current_categorie]) - 2:
@@ -109,10 +178,23 @@ class TutorialsWidget(FormClass, BaseClass):
             self.set_stylesheet_for_maps(
                 self.current_index_of_maps_tutorials_list[self.current_categorie])
 
+    def update_challenge_images(self):
+        if 1 <= self.current_index_of_maps_challenge_list[self.current_challenge_categorie] <= len(self.maps_challenge_list[self.current_challenge_categorie]) - 2:
+            logger.info('previous map zawa>>>>' +
+                        str(self.current_index_of_maps_challenge_list[self.current_challenge_categorie]))
+            self.set_stylesheet_for_challenge(
+                self.current_index_of_maps_challenge_list[self.current_challenge_categorie])
+
+
     def previous_map(self):
         if self.current_index_of_maps_tutorials_list[self.current_categorie] > 1:
             self.current_index_of_maps_tutorials_list[self.current_categorie] -= 1
-            self.update_maps_images()
+            self.update_interactive_images()
+
+    def previous_challenge(self):
+        if self.current_index_of_maps_challenge_list[self.current_challenge_categorie] > 1:
+            self.current_index_of_maps_challenge_list[self.current_challenge_categorie] -= 1
+            self.update_challenge_images()
 
     def next_map(self):
         logger.info('NEXT MAP CLICKED with the index ' +
@@ -121,7 +203,12 @@ class TutorialsWidget(FormClass, BaseClass):
             logger.info('GG NEXT MAP CLICKED with the index ' +
                         str(self.current_index_of_maps_tutorials_list[self.current_categorie]))
             self.current_index_of_maps_tutorials_list[self.current_categorie] += 1
-            self.update_maps_images()
+            self.update_interactive_images()
+
+    def next_challenge(self):
+        if self.current_index_of_maps_challenge_list[self.current_challenge_categorie] < len(self.maps_challenge_list[self.current_challenge_categorie]) - 2:
+            self.current_index_of_maps_challenge_list[self.current_challenge_categorie] += 1
+            self.update_challenge_images()
 
     def show_video(self, index_of_video):
         if 0 <= index_of_video < len(self.video_list):
@@ -131,9 +218,13 @@ class TutorialsWidget(FormClass, BaseClass):
             ''' + self.video_list[index_of_video].description + '''
             </center>''')
 
-    def update_current_categorie(self, categorie_number):
+    def update_current_interactive_categorie(self, categorie_number):
         self.current_categorie = categorie_number
-        self.update_maps_images()
+        self.update_interactive_images()
+
+    def update_current_challenge_categorie(self, categorie_number):
+        self.current_challenge_categorie = categorie_number
+        self.update_challenge_images()
 
     def __init__(self, client, *args, **kwargs):
         BaseClass.__init__(self, *args, **kwargs)
@@ -142,6 +233,7 @@ class TutorialsWidget(FormClass, BaseClass):
         util.THEME.setStyleSheet(self, "tutorials/formatters/style.css")
         self.setup_initial_videos()
         self.setup_initial_maps_tutorial()
+        self.setup_initial_challenge_map()
 
         self.nextvideo_pushbutton_tutorials.clicked.connect(self.next_video)
         self.previousvideo_pushbutton_tutorials.clicked.connect(
@@ -159,13 +251,34 @@ class TutorialsWidget(FormClass, BaseClass):
             lambda: self.start_tutorial(1))
 
         self.categorie0_pushbutton_interactive_tutorials.toggled.connect(
-            lambda: self.update_current_categorie(0))
+            lambda: self.update_current_interactive_categorie(0))
         self.categorie1_pushbutton_interactive_tutorials.toggled.connect(
-            lambda: self.update_current_categorie(1))
+            lambda: self.update_current_interactive_categorie(1))
         self.categorie2_pushbutton_interactive_tutorials.toggled.connect(
-            lambda: self.update_current_categorie(2))
+            lambda: self.update_current_interactive_categorie(2))
         self.categorie3_pushbutton_interactive_tutorials.toggled.connect(
-            lambda: self.update_current_categorie(3))
+            lambda: self.update_current_interactive_categorie(3))
+
+            #zawa
+        self.previousmap_challenge_pushbutton_tutorials.clicked.connect(
+            self.previous_challenge)
+        self.nextmap_challenge_pushbutton_tutorials.clicked.connect(self.next_challenge)
+        self.map1_challenge_pushbutton_tutorials.clicked.connect(
+            lambda: self.start_challenge(-1))
+        self.map2_challenge_pushbutton_tutorials.clicked.connect(
+            lambda: self.start_challenge(0))
+        self.map3_challenge_pushbutton_tutorials.clicked.connect(
+            lambda: self.start_challenge(1))
+
+        self.categorie0_pushbutton_challenge_tutorials.toggled.connect(
+            lambda: self.update_current_challenge_categorie(0))
+        self.categorie1_pushbutton_challenge_tutorials.toggled.connect(
+            lambda: self.update_current_challenge_categorie(1))
+        self.categorie2_pushbutton_challenge_tutorials.toggled.connect(
+            lambda: self.update_current_challenge_categorie(2))
+        self.categorie3_pushbutton_challenge_tutorials.toggled.connect(
+            lambda: self.update_current_challenge_categorie(3))
+            #fin zawa
 
         self.call_personal_trainer_pushbutton_tutorials.clicked.connect(self.calling_for_personal_trainer)
 
@@ -246,7 +359,7 @@ class TutorialsWidget(FormClass, BaseClass):
 
         # have to send message after popup because otherwise it won't be fast enough and it can happen that there is no #newbie yet
         if '#newbie' in self.client.chat.channels:
-            self.client.chat.channels['#newbie'].chatEdit.setText('Any personal trainer available ?')
+            self.client.chat.channels['#newbie'].chatEdit.setText('Any personal trainer available ?') # need to be same message for the notification system for personal trainer
             self.client.chat.channels['#newbie'].sendLine('#newbie')
 
 
@@ -273,3 +386,13 @@ class TutorialsWidget(FormClass, BaseClass):
             'tutorial_scenario_played', self.maps_tutorial_list[self.current_categorie][real_index_of_video].map_name)
         self.client.start_tutorial_map(
             self.maps_tutorial_list[self.current_categorie][real_index_of_video].map_name)
+
+    def start_challenge(self, button_number):
+        real_index_of_video = self.current_index_of_maps_challenge_list[
+            self.current_challenge_categorie] + button_number
+        '''TODO :
+        self.client.achievements.update_scenario_maps(
+            'tutorial_scenario_played', self.maps_tutorial_list[self.current_challenge_categorie][real_index_of_video].map_name)'''
+        self.client.start_tutorial_map(
+            self.maps_challenge_list[self.current_challenge_categorie][real_index_of_video].map_name)
+

@@ -7,6 +7,8 @@ from decorators import with_logger
 from fa.game_connection import GPGNetConnection
 from fa.game_process import instance
 
+import logging
+logger = logging.getLogger(__name__)
 
 class GameSessionState(IntEnum):
     # Game services are entirely off

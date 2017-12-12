@@ -283,6 +283,7 @@
      <addaction name="actionColoredNicknames"/>
      <addaction name="actionFriendsOnTop"/>
      <addaction name="actionSetNewbiesChannel"/>
+     <addaction name="actionSetCalledAsPersonalTrainer"/>
      <addaction name="actionSetAutoJoinChannels"/>
      <addaction name="actionSetJoinsParts"/>
      <addaction name="actionSetOpenGames"/>
@@ -410,6 +411,14 @@
    </property>
    <property name="text">
     <string>Use Newbies Channel</string>
+   </property>
+  </action>
+   <action name="actionSetCalledAsPersonalTrainer">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Notifications from newbies</string>
    </property>
   </action>
    <action name="actionSetAutoJoinChannels">

@@ -23,6 +23,12 @@ class Achievements():
         Settings.persisted_property('achievement/number_games_played', type=int, default_value='')
         Settings.persisted_property('achievement/tutorial_scenario_played', type=str, default_value = '')
 
+        #zawa
+        Settings.persisted_property('achievement/tutorial_scenario_played', type=str, default_value = '')
+        Settings.persisted_property('achievement/number_games_played', type=int, default_value='')
+        Settings.persisted_property('achievement/tutorial_scenario_played', type=str, default_value = '')
+        #zawa
+
         self.remove_all_none_achievements()
 
 

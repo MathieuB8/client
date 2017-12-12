@@ -183,13 +183,17 @@ class Channel(FormClass, BaseClass):
         self.blinker.start(QUERY_BLINK_SPEED)
 
     @QtCore.pyqtSlot()
-    def pingWindow(self):
+    def pingWindow(self, optsoundname=None):
         QtWidgets.QApplication.alert(self.chat_widget.client)
 
         if not self.isVisible() or QtWidgets.QApplication.activeWindow() != self.chat_widget.client:
             if self.oneMinuteOrOlder():
                 if self.chat_widget.client.soundeffects:
-                    util.THEME.sound("chat/sfx/query.wav")
+                    if optsoundname != None:
+                        util.THEME.sound("chat/sfx/{}.wav".format(optsoundname))
+                    else:
+                        util.THEME.sound("chat/sfx/query.wav")
+
 
         if not self.isVisible():
             if not self.blinker.isActive() and not self == self.chat_widget.currentWidget():
@@ -240,6 +244,9 @@ class Channel(FormClass, BaseClass):
         displayName = chname
         if player.clan is not None:
             displayName = "<b>[%s]</b>%s" % (player.clan, chname)
+
+        if self.chat_widget.client.calledAsPersonalTrainer and text.find('Any personal trainer available ?') != -1: # need to be same message as the one sent when pressing a button in newbie channel
+            self.pingWindow('called_as_trainer')
 
         # Play a ping sound and flash the title under certain circumstances
         mentioned = text.find(self.chat_widget.client.login) != -1
