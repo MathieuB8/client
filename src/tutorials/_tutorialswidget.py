@@ -340,7 +340,7 @@ class TutorialsWidget(FormClass, BaseClass):
             number_scenario_played)
 
         self.achievement3_text_label_tutorials.setText(
-            'Play on {} different maps'.format(self.achievement3_max_number))
+            'Play {} different maps'.format(self.achievement3_max_number))
         self.achievement3_progressBar_tutorials.setMaximum(self.achievement3_max_number)
         number_different_maps_played = self.client.achievements.get_value('maps_played').count(';')
         if number_different_maps_played > self.achievement3_max_number:
@@ -349,7 +349,7 @@ class TutorialsWidget(FormClass, BaseClass):
 
 
 
-        self.achievement4_text_label_tutorials.setText('Play {} challenge maps'.format(self.achievement4_max_number))
+        self.achievement4_text_label_tutorials.setText('Play {} different challenge maps'.format(self.achievement4_max_number))
         self.achievement4_progressBar_tutorials.setMaximum(self.achievement4_max_number)
         number_challenge_played = self.client.achievements.get_value('maps_challenge_played').count(';')
         if number_challenge_played > self.achievement4_max_number: # cant be higher than max value of achievement
@@ -361,7 +361,7 @@ class TutorialsWidget(FormClass, BaseClass):
         self.achievement5_progressBar_tutorials.setValue(int(self.client.achievements.get_value('number_ladder_games')))
 
 
-        self.achievement6_text_label_tutorials.setText('Called a trainer via knowledge base')
+        self.achievement6_text_label_tutorials.setText('Call a trainer via knowledge base')
         self.achievement6_progressBar_tutorials.setMaximum(self.achievement6_max_number)
         self.achievement6_progressBar_tutorials.setValue(int(self.client.achievements.get_value('called_a_trainer')))
 
@@ -386,17 +386,17 @@ class TutorialsWidget(FormClass, BaseClass):
         self.progressBar_tutorials.setValue(int(total_progress))
 
     def update_progress_bar(self, name, value):
-        if name=='':
+        if name == 'number_games_played':
             self.achievement1_progressBar_tutorials.setValue(value)
-        elif name=='tutorial_scenario_maps_played':
+        elif name == 'tutorial_scenario_maps_played':
             self.achievement2_progressBar_tutorials.setValue(value)
-        elif name=='maps_played':
+        elif name == 'maps_played':
             self.achievement3_progressBar_tutorials.setValue(value)
-        elif name=='maps_challenge_played':
+        elif name == 'maps_challenge_played':
             self.achievement4_progressBar_tutorials.setValue(value)
-        elif name=='number_ladder_games':
+        elif name == 'number_ladder_games':
             self.achievement5_progressBar_tutorials.setValue(value)
-        elif name=='called_a_trainer':
+        elif name == 'called_a_trainer':
             self.achievement6_progressBar_tutorials.setValue(value)
 
         self.update_overall_progress_bar()

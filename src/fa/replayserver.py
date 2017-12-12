@@ -129,10 +129,9 @@ class ReplayRecorder(QtCore.QObject):
         length_of_game=int(self.replayInfo['game_end'])-int(self.replayInfo['launched_at'])
         map_name_of_game = ''
         if 'mapname' in self.replayInfo:
-            map_name_of_game = self.w['mapname']
+            map_name_of_game = self.replayInfo['mapname']
         else:
             map_name_of_game = 'tutorialtab_map'
-        logger.info ("ZAWAAAA REMOVE ME>>>>>> "+str(map_name_of_game))
         self.parent.client.achievements.update_all_maps_games_achievement(length_of_game, self.replayInfo['featured_mod'], map_name_of_game)
 
         filename = os.path.join(util.REPLAY_DIR, str(self.replayInfo['uid']) + "-" + self.replayInfo['recorder'] + ".fafreplay")

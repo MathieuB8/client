@@ -5,7 +5,6 @@ import util
 from PyQt5.QtWidgets import QMessageBox
 
 class Achievements():
-    #self.client = client
     def remove_all_none_achievements(self):
         if self.get_value('number_games_played') is None:
             self.update_value('number_games_played', 0)
@@ -67,17 +66,17 @@ class Achievements():
         logger.info('Achievement initialised')
 
     def update_all_maps_games_achievement(self, game_length, featured_mod, mapname):
-        if game_length > 4*60: #otherwise they can just spam maps...
+        if game_length > 5: #otherwise they can just spam maps... 4*60 TODO REPUT IT
             if featured_mod == 'faf':
                 new_number_games_played = 1+int(self.get_value('number_games_played'))
                 self.update_value('number_games_played',new_number_games_played)
-                if new_number_games_played < self.client.tutorials.achievement1_max_number:
-                    self.client.tutorials.update_progress_bar('number_games_played', self.get_value('number_games_played'))
+                if new_number_games_played <= self.client.tutorials.achievement1_max_number:
+                    self.client.tutorials.update_progress_bar('number_games_played', new_number_games_played)
             elif featured_mod == 'ladder1v1':
                 new_number_ladder_games_played = 1+int(self.get_value('number_ladder_games'))
                 self.update_value('number_ladder_games', new_number_ladder_games_played)
-                if new_number_games_played < self.client.tutorials.achievement5_max_number:
-                    self.client.tutorials.update_progress_bar('number_ladder_games', self.get_value('number_ladder_games'))
+                if new_number_ladder_games_played <= self.client.tutorials.achievement5_max_number:
+                    self.client.tutorials.update_progress_bar('number_ladder_games', new_number_ladder_games_played)
             if mapname != 'tutorialtab_map': # doesn't take into acount scenario/challenge maps of tutorial tab
                 self.update_list_maps('maps_played',str(mapname))
 
@@ -87,10 +86,10 @@ class Achievements():
     def update_list_maps(self, name, mapname): # used by tutorial scenario maps and challenge maps
         current_value_achievement = self.get_value(name)
         if mapname not in current_value_achievement and current_value_achievement.count(";") < 20: # to avoid having a string too long, just limit it the goal of the achievement, TODO change this number/!\
-            mapname = current_value_achievement + ";" + str(mapname)
-            self.update_value(name, mapname)
+            updated_maps_list = current_value_achievement + ";" + str(mapname)
+            self.update_value(name, updated_maps_list)
 
-            number_different_maps_played = mapname.count(";")
+            number_different_maps_played = updated_maps_list.count(";")
             self.client.tutorials.update_progress_bar(name, number_different_maps_played)
 
 
