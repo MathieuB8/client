@@ -16,8 +16,6 @@ INTERNET_REPLAY_SERVER_PORT = Settings.get('replay_server/port')
 from . import DEFAULT_LIVE_REPLAY
 from . import DEFAULT_RECORD_REPLAY
 
-import logging
-logger = logging.getLogger(__name__)
 
 class ReplayRecorder(QtCore.QObject):
     """
