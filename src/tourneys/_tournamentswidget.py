@@ -53,7 +53,7 @@ class TournamentsWidget(FormClass, BaseClass):
                 myTourney.full_challonge_url = alltournaments['tournament']['full_challonge_url']
                 myTourney.description = alltournaments['tournament']['description']
                 myTourney.id = alltournaments['tournament']['id']
-                api.methods.list_participants(self.client.Api, myTourney.id, 250, 1, self.list_participants_result(response),  self.list_participants_error)
+                #api.methods.list_participants(self.client.Api, myTourney.id, 250, 1, self.list_participants_result(response),  self.list_participants_error)
 
 
                 item = QtWidgets.QListWidgetItem()
