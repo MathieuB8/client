@@ -99,7 +99,7 @@ class TutorialsWidget(FormClass, BaseClass):
 
         self.set_stylesheet_for_maps(1)
 
-    def setup_initial_challenge_map(self):
+    def setup_initial_challenge_map(self): #the start challenge needs to be adapted for challenge maps (because it won't use the init_tutorial.lua !! TODO IMPORTANT
         self.map1_challenge_pushbutton_tutorials.setFlat(True)
         self.map2_challenge_pushbutton_tutorials.setFlat(True)
         self.map3_challenge_pushbutton_tutorials.setFlat(True)

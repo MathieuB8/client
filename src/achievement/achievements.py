@@ -66,7 +66,7 @@ class Achievements():
         logger.info('Achievement initialised')
 
     def update_all_maps_games_achievement(self, game_length, featured_mod, mapname):
-        if game_length > 5: #otherwise they can just spam maps... 4*60 TODO REPUT IT
+        if game_length > 4 * 60 : #otherwise they can just spam maps...
             if featured_mod == 'faf':
                 new_number_games_played = 1+int(self.get_value('number_games_played'))
                 self.update_value('number_games_played',new_number_games_played)
