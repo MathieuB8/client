@@ -324,7 +324,7 @@ class ClientWindow(FormClass, BaseClass):
         #self.WPApi.newsDone.connect(self.on_wpapi_done)
         #self.WPApi.download()
 
-        #self.controlsContainerLayout.setAlignment(self.pageControlFrame, QtCore.Qt.AlignRight
+        #self.controlsContainerLayout.setAlignment(self.pageControlFrame, QtCore.Qt.AlignRight)
 
         # Achievements
         self.achievements = Achievements(self)
