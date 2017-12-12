@@ -1335,8 +1335,8 @@ class ClientWindow(FormClass, BaseClass):
         fa.run(info, self.game_session.relay_port, arguments)
 
     def start_tutorial_map(self, map_name):
-        info = dict(uid='', recorder=self.login, featured_mod='tutorial_tab', launched_at=time.time()) # it was message['uid']  and message['mod'] (to remove this comment)
-        fa.run(info, '', ['/init init_tutorials.lua /map '+map_name]) # before there was a self.game_session.relay_port (to remove this comment)
+        info = dict(uid='', recorder=self.login, featured_mod='tutorial_tab', launched_at=time.time())
+        fa.run(info, '', ['/init init_tutorials.lua /map '+map_name])
 
     def fill_in_session_info(self, game):
         # sometimes we get the game_info message before a game session was created
