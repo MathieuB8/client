@@ -12,6 +12,7 @@ from tourneys.tournamentinfo import TournamentInfo
 
 class TournamentsWidget(FormClass, BaseClass):
     """ list and manage the main tournament lister """
+    tourneys_general_information_data = ''
 
     def __init__(self, client, *args, **kwargs):
         BaseClass.__init__(self, *args, **kwargs)
@@ -33,10 +34,61 @@ class TournamentsWidget(FormClass, BaseClass):
         logger.error('tourneys_general_information error : '+str(resp))
         return -5
 
+    def list_participants_error(self,resp):
+        logger.error('list_participants error : '+str(resp))
+        return -5
+
     def tourneys_general_information_result(self,response):
-        logger.info('tourneys_general_information_result api response is : '+str(response))
+        logger.info('tourneys_general_information_result api response is : ' + str(response))
+        self.tourneys_general_information_data = response # hacky way... dunno how to do 2 api calls in a row...
         for alltournaments in reversed(response):
             if alltournaments.get('tournament')!= None and len(alltournaments['tournament']) >= 1:
+                myTourney = TournamentInfo()
+                myTourney.name = alltournaments['tournament']['name']
+                myTourney.state = alltournaments['tournament']['state']
+                myTourney.number_of_participants = alltournaments['tournament']['participants_count']
+                myTourney.tournament_type = alltournaments['tournament']['tournament_type']
+                myTourney.live_image_url = alltournaments['tournament']['live_image_url']
+                myTourney.start_time = alltournaments['tournament']['start_at']
+                myTourney.full_challonge_url = alltournaments['tournament']['full_challonge_url']
+                myTourney.description = alltournaments['tournament']['description']
+                myTourney.id = alltournaments['tournament']['id']
+                api.methods.list_participants(self.client.Api, myTourney.id, 250, 1, self.list_participants_result(response),  self.list_participants_error)
+
+
+                item = QtWidgets.QListWidgetItem()
+                item.setText(myTourney.name + '\nState : ' + myTourney.state + '\n\n')
+                item.setData(QtCore.Qt.UserRole, myTourney)
+                self.tourneyList.addItem(item)
+        self.tourneyList.show()
+
+
+    def list_participants_result(self, response, result_first_api_call):
+        logger.info('ZAWA 2222 >>>>>>>>>> ' + str(result_first_api_call))
+        logger.info('ZAWA 1111111 >>>>>>>> ' + str(result_first_api_call))
+        # logger.info('self.tourneys_general_information_data of list_participants_result api response is : '+str(self.tourneys_general_information_data))
+
+        '''for alltournaments in reversed(tourneys_general_information_data):
+            if alltournaments.get('tournament')!= None and len(alltournaments['tournament']) >= 1:
+                myTourney = TournamentInfo()
+                myTourney.name = alltournaments['tournament']['name']
+                myTourney.state = alltournaments['tournament']['state']
+                myTourney.number_of_participants = alltournaments['tournament']['participants_count']
+                myTourney.tournament_type = alltournaments['tournament']['tournament_type']
+                myTourney.live_image_url = alltournaments['tournament']['live_image_url']
+                myTourney.start_time = alltournaments['tournament']['start_at']
+                myTourney.full_challonge_url = alltournaments['tournament']['full_challonge_url']
+                myTourney.description = alltournaments['tournament']['description']
+                myTourney.id = alltournaments['tournament']['id']
+                #result=api.methods.list_participants(self.client.Api, myTourney.id, 250, 1, self.list_participants_result,  self.list_participants_error)
+                #logger.info('RESULT PLS ZAWA is : ' + str(result))
+                item = QtWidgets.QListWidgetItem()
+                item.setText(myTourney.name + '\nState : ' + myTourney.state + '\n\n')
+                item.setData(QtCore.Qt.UserRole, myTourney)
+                self.tourneyList.addItem(item)'''
+
+        '''for allparticipants in response:
+            if (allparticipants['tournament']) >= 1:
                 myTourney = TournamentInfo()
                 myTourney.name = alltournaments['tournament']['name']
                 myTourney.state = alltournaments['tournament']['state']
@@ -51,8 +103,8 @@ class TournamentsWidget(FormClass, BaseClass):
                 item.setText(myTourney.name+'\nState : '+myTourney.state+'\n\n')
                 item.setData(QtCore.Qt.UserRole, myTourney)
                 self.tourneyList.addItem(item)
-        self.tourneyList.show()
+        self.tourneyList.show()'''
 
     def show_tournaments_informations(self):
-        result=api.methods.tourneys_general_information(self.client.Api,250,1,self.tourneys_general_information_result,self.tourneys_general_information_error)
+        result=api.methods.tourneys_general_information(self.client.Api, 250, 1, self.tourneys_general_information_result, self.tourneys_general_information_error)
 

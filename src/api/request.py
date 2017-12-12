@@ -72,6 +72,7 @@ class ApiRequest(QObject):
             data = bytes(self._rep.readAll()).decode("utf-8")
             resp = json.loads(data)
             self.finished.emit(resp)
+
         except ValueError:
             self.error.emit("Failed to parse json: " + data)
             self._logger.exception('Failed on_finish')

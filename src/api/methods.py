@@ -85,6 +85,19 @@ def tourneys_general_information(api, page_size, page_number, on_finished, on_er
 
     return req
 
+#request : https://api.dev.faforever.com/challonge/tournaments/4058275/participants.json
+def list_participants(api, tourney_id, page_size, page_number, on_finished, on_error):
+    req = api._get('/challonge/tournaments/' + str(tourney_id) +'/participants.json', {
+        'page[size]': page_size,
+        'page[number]': page_number
+        })
+    req.finished.connect(on_finished)
+    req.error.connect(on_error)
+    req.run()
+
+    return req
+
+
 
 
 

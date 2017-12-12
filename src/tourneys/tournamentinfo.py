@@ -8,3 +8,5 @@ class TournamentInfo():
         self.start_time=''
         self.full_challonge_url=''
         self.description=''
+        self.participants_list=[]
+        self.id=''
